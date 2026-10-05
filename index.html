@@ -1,0 +1,956 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Мапа рольового дистресу</title>
+<meta name="description" content="Оцініть задоволеність своїми ролями за шкалою 1–7 і складіть власну мапу рольового дистресу.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1A1614;
+    --crimson: #B4232E;
+    --crimson-dark: #8F1A23;
+    --tint: #FBEDEE;
+    --muted: #6B6360;
+    --line: #DAD5D1;
+    --soft: #F7F4F2;
+    --bg: #FFFFFF;
+    --font: "Montserrat", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font);
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .page { max-width: 920px; margin: 0 auto; padding: 28px 16px 64px; }
+
+  /* ---------- steps nav ---------- */
+  .steps { display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap; }
+  .steps a {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 9px 16px 9px 10px; border: 1.5px solid var(--line); border-radius: 999px;
+    color: var(--muted); text-decoration: none; font-weight: 600; font-size: 14px;
+  }
+  .steps a .n {
+    width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--soft); color: var(--muted); font-weight: 700; font-size: 13px;
+  }
+  .steps a[aria-current="page"] { border-color: var(--ink); color: var(--ink); }
+  .steps a[aria-current="page"] .n { background: var(--crimson); color: #fff; }
+
+  /* ---------- headings ---------- */
+  h1 {
+    margin: 0 0 10px; font-weight: 800; letter-spacing: -0.01em;
+    font-size: clamp(26px, 5.4vw, 40px); line-height: 1.1; text-transform: uppercase;
+  }
+  h1 em { font-style: normal; color: var(--crimson); }
+  .lead { margin: 0; color: var(--ink); max-width: 62ch; }
+  .head { padding-bottom: 18px; border-bottom: 1.5px solid rgba(180, 35, 46, .45); margin-bottom: 24px; }
+  .head-row { display: flex; gap: 16px 28px; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; }
+  .name-field { display: flex; align-items: baseline; gap: 10px; flex: 1 1 240px; max-width: 340px; }
+  .cap { font-size: 12px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; white-space: nowrap; }
+  .name-field input {
+    flex: 1; min-width: 0; border: 0; border-bottom: 1.5px dotted var(--muted); background: none;
+    font: inherit; color: var(--ink); padding: 2px 2px 3px; border-radius: 0;
+  }
+  .name-field input:focus { outline: none; border-bottom: 1.5px solid var(--crimson); }
+  h2 { font-size: 15px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; margin: 0 0 4px; }
+  .note { color: var(--muted); font-size: 14px; margin: 0; }
+
+  /* ---------- step 1: roles ---------- */
+  .legend {
+    display: flex; align-items: baseline; gap: 6px 12px; flex-wrap: wrap;
+    font-size: 14px; color: var(--ink); margin: 0 0 12px;
+  }
+  .legend b { color: var(--crimson); font-weight: 700; }
+  .legend .cap { margin-right: 4px; }
+  .legend .sep { color: var(--muted); }
+  .roles { border: 1.5px solid var(--ink); border-radius: 18px; padding: 6px 18px; }
+  .role {
+    display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; gap: 14px; align-items: center;
+    padding: 12px 0; border-bottom: 1px solid var(--line);
+  }
+  .role:last-child { border-bottom: 0; }
+  .role .idx { color: var(--crimson); font-weight: 700; font-size: 13px; }
+  .role input[type="text"] {
+    width: 100%; border: 0; border-bottom: 1.5px dotted var(--muted); background: none;
+    font: inherit; font-weight: 600; color: var(--ink); padding: 6px 2px; border-radius: 0;
+  }
+  .role input[type="text"]::placeholder { color: #A39C98; font-weight: 400; }
+  .role input[type="text"]:focus { outline: none; border-bottom: 1.5px solid var(--crimson); }
+  .scale { display: flex; gap: 6px; }
+  .scale button {
+    width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid var(--line); background: #fff;
+    font: inherit; font-weight: 600; font-size: 14px; color: var(--ink); cursor: pointer; padding: 0;
+  }
+  .scale button:hover { border-color: var(--crimson); }
+  .scale button[aria-checked="true"] { background: var(--crimson); border-color: var(--crimson); color: #fff; }
+  button:focus-visible, a:focus-visible { outline: 2.5px solid var(--ink); outline-offset: 2px; }
+
+  /* ---------- chart ---------- */
+  .panel { margin-top: 32px; }
+  .chart-box { border: 1.5px solid var(--ink); border-radius: 18px; padding: 22px 22px 16px; margin-top: 14px; }
+  .chart-empty { color: var(--muted); font-size: 14px; margin: 0; padding: 14px 0; text-align: center; }
+  .c-row { display: grid; grid-template-columns: minmax(84px, 30%) minmax(0, 1fr) 26px; gap: 12px; align-items: center; height: 38px; }
+  .c-label { font-weight: 600; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: right; }
+  .c-track {
+    position: relative; height: 100%;
+    background-image: linear-gradient(to right, transparent calc(100% - 1px), var(--line) 0);
+    background-size: calc(100% / 7) 100%;
+    border-left: 1.5px solid var(--ink);
+  }
+  .c-bar {
+    position: absolute; left: 0; top: 50%; height: 16px; margin-top: -8px;
+    background: var(--crimson); border-radius: 0 4px 4px 0; transition: width .25s ease;
+  }
+  .c-row:hover .c-bar { background: var(--crimson-dark); }
+  .c-val { font-weight: 700; font-size: 15px; font-variant-numeric: tabular-nums; }
+  .c-axis { display: grid; grid-template-columns: minmax(84px, 30%) minmax(0, 1fr) 26px; gap: 12px; margin-top: 4px; }
+  .c-ticks { display: grid; grid-template-columns: repeat(7, 1fr); font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .c-ticks span { text-align: right; }
+  .c-ticks i { font-style: normal; display: inline-block; transform: translateX(50%); }
+  .c-sum { margin: 14px 0 0; padding-top: 12px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+  .c-sum b { color: var(--ink); }
+
+  /* ---------- buttons ---------- */
+  .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 22px; align-items: center; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    font: inherit; font-weight: 700; font-size: 14px; cursor: pointer; text-decoration: none;
+    padding: 12px 20px; border-radius: 999px; border: 1.5px solid var(--ink); background: #fff; color: var(--ink);
+  }
+  .btn:hover { background: var(--soft); }
+  .btn.primary { background: var(--crimson); border-color: var(--crimson); color: #fff; }
+  .btn.primary:hover { background: var(--crimson-dark); border-color: var(--crimson-dark); }
+  .btn.ghost { border-color: transparent; color: var(--muted); font-weight: 600; padding-left: 8px; padding-right: 8px; }
+  .btn.ghost:hover { color: var(--crimson); background: none; }
+  .spacer { flex: 1; }
+  .check { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .check input { width: 18px; height: 18px; accent-color: var(--crimson); margin: 0; }
+
+  /* ---------- step 2: map ---------- */
+  .map { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .zone { border: 1.5px solid var(--ink); border-radius: 18px; padding: 18px 20px 20px; min-height: 196px; display: flex; flex-direction: column; }
+  .zone h3 { margin: 0 0 6px; font-size: 15px; font-weight: 800; letter-spacing: .02em; text-transform: uppercase; display: flex; gap: 10px; align-items: baseline; }
+  .zone h3 .zn { color: var(--crimson); font-size: 12px; font-weight: 700; }
+  .zone p { margin: 0 0 14px; font-size: 14px; line-height: 1.45; }
+  .zone .cap { display: block; margin-top: auto; margin-bottom: 8px; font-size: 11px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; min-height: 34px; }
+  .chip {
+    font: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+    padding: 6px 12px; border-radius: 999px; border: 1.5px solid var(--line); background: #fff; color: var(--muted);
+    max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .chip small { font-size: 11px; font-weight: 700; opacity: .75; margin-left: 4px; }
+  .chip:hover { border-color: var(--crimson); color: var(--ink); }
+  .chip[aria-pressed="true"] { background: var(--crimson); border-color: var(--crimson); color: #fff; }
+  .blank { display: none; flex: 1; flex-direction: column; gap: 22px; padding-top: 14px; }
+  .blank i { display: block; border-bottom: 1.5px dotted var(--muted); }
+  .map.clean .chip[aria-pressed="false"] { display: none; }
+  .map.clean .zone.is-empty .chips { display: none; }
+  .map.clean .zone.is-empty .blank { display: flex; }
+  .no-roles { border: 1.5px dashed var(--line); border-radius: 18px; padding: 28px 20px; text-align: center; color: var(--muted); }
+  .foot { display: flex; justify-content: space-between; gap: 12px; margin-top: 26px; font-size: 13px; }
+  .foot span { font-style: italic; color: var(--muted); }
+  .foot a { color: var(--crimson); font-weight: 700; text-decoration: none; }
+  .conclusion { margin-top: 16px; display: grid; gap: 16px; }
+  .sum-box { border: 1.5px solid var(--ink); border-radius: 18px; padding: 18px 20px 20px; }
+  .sum-box h2 { margin-bottom: 10px; }
+  .sum-box p { margin: 0 0 4px; font-size: 14.5px; }
+  .sum-box p.empty { color: var(--muted); }
+  .sum-box .cap { display: block; margin: 16px 0 6px; font-size: 11px; }
+  .sum-box ul { margin: 0; padding-left: 18px; font-size: 14.5px; }
+  .sum-box li { margin-bottom: 3px; }
+  .sum-box li::marker { color: var(--crimson); }
+  .focus-box { border: 1.5px solid var(--crimson); background: var(--tint); border-radius: 18px; padding: 18px 20px 20px; }
+  .focus-box label { display: block; margin-bottom: 6px; white-space: normal; }
+  .focus-box input {
+    width: 100%; border: 0; border-bottom: 1.5px dotted var(--muted); background: none; border-radius: 0;
+    font: inherit; font-weight: 600; font-size: 17px; color: var(--ink); padding: 6px 2px;
+  }
+  .focus-box input:focus { outline: none; border-bottom: 1.5px solid var(--crimson); }
+  .pick { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 14px; }
+  .pick .hint { font-size: 12.5px; color: var(--muted); margin-right: 4px; }
+  .map.clean ~ .conclusion .pick { display: none; }
+  .privacy { margin-top: 18px; font-size: 12.5px; color: var(--muted); }
+  [hidden] { display: none !important; }
+
+  @media (max-width: 680px) {
+    .role { grid-template-columns: 26px minmax(0, 1fr); row-gap: 10px; }
+    .scale { grid-column: 2; justify-content: space-between; gap: 4px; }
+    .map { grid-template-columns: 1fr; }
+    .zone { min-height: 0; }
+    .roles { padding: 4px 14px; }
+    .chart-box { padding: 16px 14px 12px; }
+  }
+  @media print {
+    @page { size: A4; margin: 12mm; }
+    .steps, .actions, .privacy, .no-print { display: none !important; }
+    .page { padding: 0; max-width: none; }
+    .map { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .zone { break-inside: avoid; min-height: 150px; padding: 12px 14px; }
+    .chip[aria-pressed="false"] { display: none; }
+    .zone.is-empty .chips { display: none; }
+    .zone.is-empty .blank { display: flex; }
+    .chip, .c-bar, .scale button, .focus-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .pick { display: none; }
+    .sum-box, .focus-box { break-inside: avoid; padding: 12px 14px; }
+    .conclusion { gap: 10px; margin-top: 10px; }
+    .name-field input { border-bottom-style: dotted; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <nav class="steps no-print" aria-label="Кроки">
+    <a href="#roli" data-step="roli" data-go="roli"><span class="n">1</span>Задоволеність ролями</a>
+    <a href="#mapa" data-step="mapa" data-go="mapa"><span class="n">2</span>Мапа дистресу</a>
+  </nav>
+
+  <!-- ======================= КРОК 1 ======================= -->
+  <section id="step-roli">
+    <div class="head">
+      <h1>Задоволеність <em>ролями</em></h1>
+      <div class="head-row">
+        <p class="lead">Впишіть свої ролі (до десяти) та оцініть кожну за шкалою від 1 до 7: наскільки ви задоволені цією роллю.</p>
+        <label class="name-field"><span class="cap">Ім'я:</span><input type="text" data-name maxlength="40" autocomplete="off" aria-label="Ім'я"></label>
+      </div>
+    </div>
+
+    <p class="legend"><span class="cap">Задоволеність роллю:</span><span><b>1</b> — найменш задоволена</span><span class="sep">·</span><span><b>7</b> — найбільш задоволена</span></p>
+    <div class="roles" id="roles"></div>
+
+    <div class="panel">
+      <h2>Діаграма задоволеності ролями</h2>
+      <p class="note">Оновлюється під час заповнення. Порожні рядки не враховуються.</p>
+      <div class="chart-box" id="chart" aria-live="polite"></div>
+    </div>
+
+    <div class="actions">
+      <a class="btn primary" href="#mapa" data-go="mapa">Далі: мапа дистресу →</a>
+      <button class="btn" type="button" id="dl-chart">Завантажити діаграму (PNG)</button>
+      <span class="spacer"></span>
+      <button class="btn ghost" type="button" data-reset>Очистити все</button>
+    </div>
+    <p class="privacy">Усе, що ви вписуєте, зберігається лише у вашому браузері на цьому пристрої й нікуди не надсилається.</p>
+  </section>
+
+  <!-- ======================= КРОК 2 ======================= -->
+  <section id="step-mapa" hidden>
+    <div class="head">
+      <h1>Мапа <em>рольового дистресу</em></h1>
+      <div class="head-row">
+        <p class="lead">Позначте в кожному квадраті ролі, у яких ви відчуваєте цей вид напруги.</p>
+        <label class="name-field"><span class="cap">Ім'я:</span><input type="text" data-name maxlength="40" autocomplete="off" aria-label="Ім'я"></label>
+      </div>
+    </div>
+
+    <div class="no-roles" id="no-roles" hidden>
+      Спершу впишіть хоча б одну роль на кроці 1.<br><br>
+      <a class="btn" href="#roli" data-go="roli">← До ролей</a>
+    </div>
+
+    <div class="map" id="map"></div>
+
+    <div class="conclusion" id="conclusion">
+      <div class="sum-box">
+        <h2>Висновок</h2>
+        <div id="summary" aria-live="polite"></div>
+      </div>
+      <div class="focus-box">
+        <label class="cap" for="focus">Роль, над якою я хочу попрацювати:</label>
+        <input type="text" id="focus" maxlength="90" autocomplete="off">
+        <div class="pick" id="pick"></div>
+      </div>
+    </div>
+
+    <div class="foot">
+      <span>За матеріалами Ikigai Tribe</span>
+      <a href="https://ikigaitribe.com" target="_blank" rel="noopener">ikigaitribe.com</a>
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" type="button" id="dl-map">Завантажити мапу (PNG)</button>
+      <button class="btn" type="button" id="print">Друк / PDF</button>
+      <label class="check"><input type="checkbox" id="clean">Показати лише обрані ролі</label>
+      <span class="spacer"></span>
+      <a class="btn ghost" href="#roli" data-go="roli">← До ролей</a>
+    </div>
+    <p class="privacy">Натисніть на роль, щоб додати її в зону; натисніть ще раз, щоб прибрати. Число поруч із роллю — ваша оцінка задоволеності цією роллю.</p>
+  </section>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var MAX = 10;
+  var KEY = 'role-distress-map-v1';
+  var INK = '#1A1614', CRIMSON = '#B4232E', MUTED = '#6B6360', LINE = '#DAD5D1', TINT = '#FBEDEE';
+  var FONT = 'Montserrat, "Segoe UI", "Helvetica Neue", Arial, sans-serif';
+
+  var ZONES = [
+    { id: 1, title: 'Рольове перевантаження', text: 'Ця роль вимагає більше, ніж я можу стабільно давати.', single: false },
+    { id: 2, title: 'Рольове поглинання', text: 'Одна роль забирає весь мій час і увагу, залишаючи мало місця для інших ролей.', single: true },
+    { id: 3, title: 'Рольова плутанина', text: 'Я не впевнена, хто я і де мої межі в цій ролі.', single: false },
+    { id: 4, title: 'Рольова невизначеність', text: 'Я не знаю, чого від мене очікують і як виглядає успіх.', single: false },
+    { id: 5, title: 'Рольовий полон', text: 'Я відчуваю себе в пастці ролі, яку більше не обираю вільно.', single: true },
+    { id: 6, title: 'Рольовий конфлікт', text: 'Вимоги цієї ролі суперечать іншій моїй ролі.', single: false },
+    { id: 7, title: 'Рольова провина', text: 'Я відчуваю провину, що не приділяю цій ролі стільки часу, уваги чи присутності, скільки вона заслуговує.', single: false },
+    { id: 8, title: 'Рольове напруження', text: 'Виконання цієї ролі створює напругу або емоційний тиск.', single: false }
+  ];
+
+  /* ---------------- state ---------------- */
+  function blankState() {
+    var s = { name: '', focus: '', roles: [], zones: {}, clean: false };
+    for (var i = 0; i < MAX; i++) s.roles.push({ name: '', score: null });
+    ZONES.forEach(function (z) { s.zones[z.id] = []; });
+    return s;
+  }
+  function load() {
+    var s = blankState();
+    try {
+      var raw = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (raw && Array.isArray(raw.roles)) {
+        s.name = typeof raw.name === 'string' ? raw.name : '';
+        s.clean = !!raw.clean;
+        s.focus = typeof raw.focus === 'string' ? raw.focus : '';
+        for (var i = 0; i < MAX; i++) {
+          var r = raw.roles[i] || {};
+          s.roles[i].name = typeof r.name === 'string' ? r.name : '';
+          s.roles[i].score = (r.score >= 1 && r.score <= 7) ? Math.round(r.score) : null;
+        }
+        ZONES.forEach(function (z) {
+          var arr = raw.zones && raw.zones[z.id];
+          if (Array.isArray(arr)) s.zones[z.id] = arr.filter(function (n) { return n >= 0 && n < MAX; });
+        });
+      }
+    } catch (e) { /* storage unavailable: page works without it */ }
+    return s;
+  }
+  function save() {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+  }
+  var state = load();
+
+  function roleName(i) { return state.roles[i].name.trim(); }
+  function namedRoles() {
+    var out = [];
+    for (var i = 0; i < MAX; i++) if (roleName(i)) out.push(i);
+    return out;
+  }
+  function ratedRoles() {
+    return namedRoles().filter(function (i) { return state.roles[i].score; });
+  }
+  function zoneRoles(zid) {
+    return state.zones[zid].filter(function (i) { return roleName(i); });
+  }
+  function pad2(n) { return (n < 10 ? '0' : '') + n; }
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  /* ---------------- step 1: role rows ---------------- */
+  var rolesEl = document.getElementById('roles');
+  function buildRoles() {
+    rolesEl.textContent = '';
+    state.roles.forEach(function (r, i) {
+      var row = el('div', 'role');
+      row.appendChild(el('span', 'idx', pad2(i + 1)));
+
+      var input = document.createElement('input');
+      input.type = 'text'; input.maxLength = 40; input.autocomplete = 'off';
+      input.value = r.name;
+      input.placeholder = i === 0 ? 'Наприклад: мама, керівниця, донька…' : 'Роль';
+      input.setAttribute('aria-label', 'Роль ' + (i + 1));
+      input.addEventListener('input', function () { r.name = input.value; save(); renderChart(); });
+      row.appendChild(input);
+
+      var scale = el('div', 'scale');
+      scale.setAttribute('role', 'radiogroup');
+      scale.setAttribute('aria-label', 'Задоволеність роллю ' + (i + 1) + ', від 1 до 7');
+      for (var v = 1; v <= 7; v++) (function (v) {
+        var b = el('button', null, String(v));
+        b.type = 'button';
+        b.setAttribute('role', 'radio');
+        b.setAttribute('aria-checked', r.score === v ? 'true' : 'false');
+        b.addEventListener('click', function () {
+          r.score = (r.score === v) ? null : v;
+          Array.prototype.forEach.call(scale.children, function (c, k) {
+            c.setAttribute('aria-checked', r.score === k + 1 ? 'true' : 'false');
+          });
+          save(); renderChart();
+        });
+        scale.appendChild(b);
+      })(v);
+      row.appendChild(scale);
+      rolesEl.appendChild(row);
+    });
+  }
+
+  /* ---------------- step 1: chart ---------------- */
+  var chartEl = document.getElementById('chart');
+  function average(ids) {
+    var sum = 0;
+    ids.forEach(function (i) { sum += state.roles[i].score; });
+    return sum / ids.length;
+  }
+  function fmt(n) { return n.toFixed(1).replace('.', ','); }
+
+  function renderChart() {
+    var ids = ratedRoles();
+    chartEl.textContent = '';
+    document.getElementById('dl-chart').disabled = !ids.length;
+    if (!ids.length) {
+      chartEl.appendChild(el('p', 'chart-empty', 'Впишіть роль та оберіть оцінку — діаграма з\'явиться тут.'));
+      return;
+    }
+    ids.forEach(function (i) {
+      var r = state.roles[i];
+      var row = el('div', 'c-row');
+      row.title = roleName(i) + ': ' + r.score + ' з 7';
+      row.appendChild(el('div', 'c-label', roleName(i)));
+      var track = el('div', 'c-track');
+      var bar = el('div', 'c-bar');
+      bar.style.width = (r.score / 7 * 100) + '%';
+      track.appendChild(bar);
+      row.appendChild(track);
+      row.appendChild(el('div', 'c-val', String(r.score)));
+      chartEl.appendChild(row);
+    });
+    var axis = el('div', 'c-axis');
+    axis.appendChild(el('div'));
+    var ticks = el('div', 'c-ticks');
+    for (var v = 1; v <= 7; v++) {
+      var s = el('span'); s.appendChild(el('i', null, String(v))); ticks.appendChild(s);
+    }
+    axis.appendChild(ticks);
+    axis.appendChild(el('div'));
+    chartEl.appendChild(axis);
+
+    var sum = el('p', 'c-sum');
+    sum.appendChild(document.createTextNode('Середня задоволеність: '));
+    sum.appendChild(el('b', null, fmt(average(ids)) + ' з 7'));
+    sum.appendChild(document.createTextNode(' · оцінено ролей: ' + ids.length));
+    var unrated = namedRoles().length - ids.length;
+    if (unrated > 0) sum.appendChild(document.createTextNode(' · без оцінки: ' + unrated));
+    chartEl.appendChild(sum);
+  }
+
+  /* ---------------- step 2: map ---------------- */
+  var mapEl = document.getElementById('map');
+  function renderMap() {
+    var ids = namedRoles();
+    mapEl.textContent = '';
+    mapEl.classList.toggle('clean', state.clean);
+    document.getElementById('clean').checked = state.clean;
+    document.getElementById('no-roles').hidden = ids.length > 0;
+
+    ZONES.forEach(function (z) {
+      var chosen = zoneRoles(z.id);
+      var box = el('div', 'zone' + (chosen.length ? '' : ' is-empty'));
+      var h = el('h3');
+      h.appendChild(el('span', 'zn', pad2(z.id)));
+      h.appendChild(document.createTextNode(z.title));
+      box.appendChild(h);
+      box.appendChild(el('p', null, z.text));
+      box.appendChild(el('span', 'cap', z.single ? 'Роль:' : 'Роль/ролі:'));
+
+      var chips = el('div', 'chips');
+      ids.forEach(function (i) {
+        var on = chosen.indexOf(i) !== -1;
+        var c = el('button', 'chip');
+        c.type = 'button';
+        c.setAttribute('aria-pressed', on ? 'true' : 'false');
+        c.appendChild(document.createTextNode(roleName(i)));
+        if (state.roles[i].score) c.appendChild(el('small', null, String(state.roles[i].score)));
+        c.addEventListener('click', function () {
+          var arr = state.zones[z.id];
+          var at = arr.indexOf(i);
+          if (at !== -1) arr.splice(at, 1);
+          else if (z.single) state.zones[z.id] = [i];
+          else arr.push(i);
+          save(); renderMap();
+        });
+        chips.appendChild(c);
+      });
+      box.appendChild(chips);
+
+      var blank = el('div', 'blank');
+      blank.appendChild(el('i')); blank.appendChild(el('i'));
+      box.appendChild(blank);
+      mapEl.appendChild(box);
+    });
+    renderSummary();
+  }
+
+  /* ---------------- step 2: conclusion ---------------- */
+  var EMPTY_SUMMARY = 'Позначте ролі в зонах — висновок з\'явиться тут.';
+  function zoneShort(z) { return z.title.split(' ')[1].toLowerCase(); }
+  function joinNames(list) { return list.map(function (p) { return p.name; }).join(', '); }
+  /* Text is built as segments {t: text, b: bold} so the page and the PNG share it. */
+  function summary() {
+    var per = namedRoles().map(function (i) {
+      var zs = ZONES.filter(function (z) { return zoneRoles(z.id).indexOf(i) !== -1; });
+      return { name: roleName(i), score: state.roles[i].score, zones: zs.map(zoneShort) };
+    });
+    var marked = per.filter(function (p) { return p.zones.length; }).sort(function (a, b) {
+      return b.zones.length - a.zones.length || (a.score || 8) - (b.score || 8);
+    });
+    var free = per.filter(function (p) { return !p.zones.length; });
+    var lines = [];
+    if (marked.length) {
+      var top = marked[0].zones.length;
+      var tops = marked.filter(function (p) { return p.zones.length === top; });
+      lines.push([{ t: 'Найбільше видів напруги: ' }, { t: joinNames(tops), b: true }, { t: ' — ' + top + ' з 8 зон.' }]);
+      var rated = per.filter(function (p) { return p.score; });
+      if (rated.length > 1) {
+        var min = Math.min.apply(null, rated.map(function (p) { return p.score; }));
+        var max = Math.max.apply(null, rated.map(function (p) { return p.score; }));
+        if (min < max) {
+          var lows = rated.filter(function (p) { return p.score === min; });
+          lines.push([{ t: 'Найнижча задоволеність: ' }, { t: joinNames(lows), b: true }, { t: ' — ' + min + ' з 7.' }]);
+        }
+      }
+      if (free.length) lines.push([{ t: 'Без позначеної напруги: ' }, { t: joinNames(free), b: true }, { t: '.' }]);
+    }
+    return {
+      lines: lines,
+      roles: marked.map(function (p) {
+        return [{ t: p.name, b: true }, { t: p.score ? ' (задоволеність ' + p.score + ')' : '' },
+                { t: ' — ' + p.zones.join(', ') + '.' }];
+      })
+    };
+  }
+  function segsTo(parent, segs) {
+    segs.forEach(function (sg) {
+      if (!sg.t) return;
+      parent.appendChild(sg.b ? el('b', null, sg.t) : document.createTextNode(sg.t));
+    });
+    return parent;
+  }
+  var focusEl = document.getElementById('focus');
+  focusEl.value = state.focus;
+  focusEl.addEventListener('input', function () { state.focus = focusEl.value; save(); renderPick(); });
+  function renderPick() {
+    var pick = document.getElementById('pick'), ids = namedRoles();
+    pick.textContent = '';
+    if (!ids.length) return;
+    pick.appendChild(el('span', 'hint', 'Обрати зі своїх ролей:'));
+    ids.forEach(function (i) {
+      var c = el('button', 'chip', roleName(i));
+      c.type = 'button';
+      c.setAttribute('aria-pressed', state.focus.trim() === roleName(i) ? 'true' : 'false');
+      c.addEventListener('click', function () {
+        state.focus = state.focus.trim() === roleName(i) ? '' : roleName(i);
+        focusEl.value = state.focus; save(); renderPick();
+      });
+      pick.appendChild(c);
+    });
+  }
+  function renderSummary() {
+    document.getElementById('conclusion').hidden = !namedRoles().length;
+    var box = document.getElementById('summary'), S = summary();
+    box.textContent = '';
+    if (!S.lines.length) box.appendChild(el('p', 'empty', EMPTY_SUMMARY));
+    S.lines.forEach(function (l) { box.appendChild(segsTo(el('p'), l)); });
+    if (S.roles.length) {
+      box.appendChild(el('span', 'cap', 'Напруга за ролями:'));
+      var ul = el('ul');
+      S.roles.forEach(function (r) { ul.appendChild(segsTo(el('li'), r)); });
+      box.appendChild(ul);
+    }
+    renderPick();
+  }
+
+  /* ---------------- shared bits ---------------- */
+  var nameInputs = document.querySelectorAll('[data-name]');
+  Array.prototype.forEach.call(nameInputs, function (inp) {
+    inp.value = state.name;
+    inp.addEventListener('input', function () {
+      state.name = inp.value;
+      Array.prototype.forEach.call(nameInputs, function (o) { if (o !== inp) o.value = state.name; });
+      save();
+    });
+  });
+
+  document.getElementById('clean').addEventListener('change', function (e) {
+    state.clean = e.target.checked; save(); renderMap();
+  });
+  document.getElementById('print').addEventListener('click', function () { window.print(); });
+  document.querySelector('[data-reset]').addEventListener('click', function () {
+    if (!confirm('Стерти всі ролі, оцінки та мапу?')) return;
+    state = blankState(); save();
+    Array.prototype.forEach.call(nameInputs, function (o) { o.value = ''; });
+    focusEl.value = '';
+    buildRoles(); renderChart(); renderMap();
+  });
+
+  var current = null;
+  function show(step) {
+    step = step === 'mapa' ? 'mapa' : 'roli';
+    current = step;
+    document.getElementById('step-roli').hidden = step !== 'roli';
+    document.getElementById('step-mapa').hidden = step !== 'mapa';
+    Array.prototype.forEach.call(document.querySelectorAll('.steps a'), function (a) {
+      if (a.dataset.step === step) a.setAttribute('aria-current', 'page');
+      else a.removeAttribute('aria-current');
+    });
+    if (step === 'mapa') renderMap(); else renderChart();
+    try { window.scrollTo(0, 0); } catch (e) {}
+  }
+  function hashStep() {
+    var h = '';
+    try { h = location.hash; } catch (e) {}
+    return h === '#mapa' ? 'mapa' : 'roli';
+  }
+  /* Switching is done in JS on click, so it also works where links to #anchors
+     are blocked (embedded previews); the address bar is updated when allowed. */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('[data-go]') : null;
+    if (!a) return;
+    e.preventDefault();
+    var step = a.getAttribute('data-go');
+    show(step);
+    try { history.pushState(null, '', '#' + step); } catch (err) {}
+  });
+  window.addEventListener('hashchange', function () { if (hashStep() !== current) show(hashStep()); });
+  window.addEventListener('popstate', function () { if (hashStep() !== current) show(hashStep()); });
+
+  /* ---------------- PNG export (drawn on canvas, no libraries) ---------------- */
+  function font(ctx, weight, size, italic) {
+    ctx.font = (italic ? 'italic ' : '') + weight + ' ' + size + 'px ' + FONT;
+  }
+  function spacing(ctx, px) { if ('letterSpacing' in ctx) ctx.letterSpacing = px + 'px'; }
+  function rrect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+  function wrap(ctx, text, maxW) {
+    var words = text.split(/\s+/), lines = [], cur = '';
+    words.forEach(function (w) {
+      var t = cur ? cur + ' ' + w : w;
+      if (cur && ctx.measureText(t).width > maxW) { lines.push(cur); cur = w; }
+      else cur = t;
+    });
+    if (cur) lines.push(cur);
+    return lines;
+  }
+  function fit(ctx, text, maxW) {
+    if (ctx.measureText(text).width <= maxW) return text;
+    var t = text;
+    while (t.length > 1 && ctx.measureText(t + '…').width > maxW) t = t.slice(0, -1);
+    return t + '…';
+  }
+  function dotted(ctx, x1, x2, y) {
+    ctx.save();
+    ctx.strokeStyle = MUTED; ctx.lineWidth = 1.5; ctx.setLineDash([2, 5]);
+    ctx.beginPath(); ctx.moveTo(x1, y); ctx.lineTo(x2, y); ctx.stroke();
+    ctx.restore();
+  }
+  function header(ctx, W, M, black, red, sub) {
+    ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'left';
+    var ts = 54; spacing(ctx, 0);
+    font(ctx, 800, ts);
+    while (ts > 34 && ctx.measureText(black + ' ' + red).width > W - 2 * M) { ts -= 2; font(ctx, 800, ts); }
+    ctx.fillStyle = INK; ctx.fillText(black, M, 128);
+    ctx.fillStyle = CRIMSON; ctx.fillText(red, M + ctx.measureText(black + ' ').width, 128);
+
+    var nm = state.name.trim();
+    font(ctx, 700, 14); spacing(ctx, 1.2);
+    var capW = ctx.measureText('ІМ\'Я:').width + 12;
+    spacing(ctx, 0); font(ctx, 600, 19);
+    var nameW = Math.max(190, Math.min(300, ctx.measureText(nm).width + 10));
+    var nx = W - M - nameW;
+    if (nm) { ctx.fillStyle = INK; ctx.fillText(fit(ctx, nm, nameW), nx, 178); }
+    dotted(ctx, nx, W - M, 184);
+    font(ctx, 700, 14); spacing(ctx, 1.2);
+    ctx.fillStyle = INK; ctx.fillText('ІМ\'Я:', nx - capW, 178);
+    spacing(ctx, 0);
+
+    font(ctx, 400, 19); ctx.fillStyle = INK;
+    ctx.fillText(fit(ctx, sub, nx - capW - M - 24), M, 178);
+
+    ctx.strokeStyle = 'rgba(180,35,46,.45)'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(M, 206); ctx.lineTo(W - M, 206); ctx.stroke();
+  }
+  function footer(ctx, W, H, M) {
+    ctx.textBaseline = 'alphabetic';
+    font(ctx, 400, 17, true); ctx.fillStyle = MUTED; ctx.textAlign = 'left';
+    ctx.fillText('За матеріалами Ikigai Tribe', M, H - 56);
+    font(ctx, 700, 17); ctx.fillStyle = CRIMSON; ctx.textAlign = 'right';
+    ctx.fillText('ikigaitribe.com', W - M, H - 56);
+    ctx.textAlign = 'left';
+  }
+  function newCanvas(W, H) {
+    var c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    var ctx = c.getContext('2d');
+    ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, W, H);
+    return c;
+  }
+
+  /* lay out role chips inside a box; returns false if they do not fit */
+  function layoutChips(ctx, labels, maxW, maxH, fs) {
+    var h = Math.round(fs * 2), gap = Math.max(5, Math.round(fs * 0.45)), padX = Math.round(fs * 0.85);
+    font(ctx, 600, fs);
+    var x = 0, y = 0, out = [];
+    for (var k = 0; k < labels.length; k++) {
+      var text = fit(ctx, labels[k], maxW - padX * 2);
+      var w = Math.ceil(ctx.measureText(text).width) + padX * 2;
+      if (x > 0 && x + w > maxW) { x = 0; y += h + gap; }
+      out.push({ x: x, y: y, w: w, h: h, text: text, padX: padX });
+      x += w + gap;
+    }
+    return { items: out, fs: fs, ok: y + h <= maxH };
+  }
+
+  /* wrap mixed bold/regular segments into lines of positioned runs */
+  function flow(ctx, segs, maxW, size) {
+    var lines = [[]], x = 0;
+    segs.forEach(function (sg) {
+      if (!sg.t) return;
+      font(ctx, sg.b ? 700 : 400, size);
+      sg.t.split(/(\s+)/).forEach(function (w) {
+        if (!w) return;
+        if (/^\s+$/.test(w)) { if (x > 0) x += ctx.measureText(' ').width; return; }
+        var wd = ctx.measureText(w).width;
+        if (x > 0 && x + wd > maxW) { lines.push([]); x = 0; }
+        lines[lines.length - 1].push({ text: w, b: !!sg.b, x: x });
+        x += wd;
+      });
+    });
+    return lines;
+  }
+  function summaryRows(ctx, maxW) {
+    var S = summary(), rows = [], y = 0, LH = 28;
+    function add(segs, indent, bullet, gapAfter) {
+      flow(ctx, segs, maxW - indent, 18).forEach(function (ln, k) {
+        rows.push({ y: y, runs: ln, indent: indent, bullet: bullet && k === 0 });
+        y += LH;
+      });
+      y += gapAfter;
+    }
+    if (!S.lines.length) add([{ t: 'Ролі в зонах не позначено.' }], 0, false, 0);
+    S.lines.forEach(function (l) { add(l, 0, false, 4); });
+    if (S.roles.length) {
+      y += 12; rows.push({ y: y, cap: 'НАПРУГА ЗА РОЛЯМИ:' }); y += 32;
+      S.roles.forEach(function (r) { add(r, 24, true, 2); });
+    }
+    return { rows: rows, h: y };
+  }
+
+  function buildMapCanvas() {
+    var W = 1240, M = 84, GAP = 24, P = 28;
+    var top = 236, bottom = 1648;
+
+    /* measure the conclusion first: it decides the image height */
+    var mctx = document.createElement('canvas').getContext('2d');
+    var sum = summaryRows(mctx, W - 2 * M - 2 * P);
+    font(mctx, 600, 22);
+    var focusLines = state.focus.trim() ? wrap(mctx, state.focus.trim(), W - 2 * M - 2 * P).slice(0, 2) : [];
+    var sumY = bottom + GAP, sumH = 76 + sum.h + 22;
+    var focY = sumY + sumH + GAP, focH = 62 + Math.max(1, focusLines.length) * 34 + 24;
+    var H = focY + focH + 106;
+
+    var c = newCanvas(W, H), ctx = c.getContext('2d');
+    header(ctx, W, M, 'МАПА', 'РОЛЬОВОГО ДИСТРЕСУ', 'Ролі, у яких я відчуваю цей вид напруги.');
+
+    var bw = (W - 2 * M - GAP) / 2, bh = (bottom - top - 3 * GAP) / 4;
+
+    ZONES.forEach(function (z, n) {
+      var x = M + (n % 2) * (bw + GAP), y = top + Math.floor(n / 2) * (bh + GAP);
+      rrect(ctx, x, y, bw, bh, 22);
+      ctx.strokeStyle = INK; ctx.lineWidth = 2; ctx.stroke();
+
+      font(ctx, 700, 15); ctx.fillStyle = CRIMSON; ctx.fillText(pad2(z.id), x + P, y + 52);
+      font(ctx, 800, 21); spacing(ctx, 0.4); ctx.fillStyle = INK;
+      ctx.fillText(fit(ctx, z.title.toUpperCase(), bw - 2 * P - 36), x + P + 36, y + 52);
+      spacing(ctx, 0);
+
+      font(ctx, 400, 18); ctx.fillStyle = INK;
+      var ty = y + 88;
+      wrap(ctx, z.text, bw - 2 * P).slice(0, 3).forEach(function (ln) { ctx.fillText(ln, x + P, ty); ty += 27; });
+
+      var capY = ty + 20;
+      font(ctx, 700, 13); spacing(ctx, 1.2); ctx.fillStyle = INK;
+      ctx.fillText(z.single ? 'РОЛЬ:' : 'РОЛЬ/РОЛІ:', x + P, capY);
+      spacing(ctx, 0);
+
+      var chosen = zoneRoles(z.id);
+      var areaY = capY + 18, areaH = y + bh - 22 - areaY, areaW = bw - 2 * P;
+      if (!chosen.length) {
+        dotted(ctx, x + P, x + bw - P, areaY + Math.min(30, areaH * 0.35));
+        dotted(ctx, x + P, x + bw - P, areaY + Math.min(70, areaH * 0.8));
+        return;
+      }
+      var labels = chosen.map(function (i) {
+        return roleName(i) + (state.roles[i].score ? '  ·  ' + state.roles[i].score : '');
+      });
+      var lay, sizes = [18, 16, 14, 12, 11];
+      for (var s = 0; s < sizes.length; s++) {
+        lay = layoutChips(ctx, labels, areaW, areaH, sizes[s]);
+        if (lay.ok) break;
+      }
+      font(ctx, 600, lay.fs);
+      ctx.textBaseline = 'middle';
+      lay.items.forEach(function (it) {
+        if (it.y + it.h > areaH + 1) return;
+        rrect(ctx, x + P + it.x, areaY + it.y, it.w, it.h, it.h / 2);
+        ctx.fillStyle = TINT; ctx.fill();
+        ctx.strokeStyle = CRIMSON; ctx.lineWidth = 1.5; ctx.stroke();
+        ctx.fillStyle = INK;
+        ctx.fillText(it.text, x + P + it.x + it.padX, areaY + it.y + it.h / 2 + 1);
+      });
+      ctx.textBaseline = 'alphabetic';
+    });
+
+    /* conclusion */
+    rrect(ctx, M, sumY, W - 2 * M, sumH, 22);
+    ctx.strokeStyle = INK; ctx.lineWidth = 2; ctx.stroke();
+    font(ctx, 800, 21); spacing(ctx, 0.4); ctx.fillStyle = INK; ctx.textAlign = 'left';
+    ctx.fillText('ВИСНОВОК', M + P, sumY + 52);
+    spacing(ctx, 0);
+    sum.rows.forEach(function (r) {
+      var by = sumY + 76 + r.y;
+      if (r.cap) {
+        font(ctx, 700, 13); spacing(ctx, 1.2); ctx.fillStyle = INK;
+        ctx.fillText(r.cap, M + P, by + 16); spacing(ctx, 0);
+        return;
+      }
+      if (r.bullet) {
+        ctx.fillStyle = CRIMSON; ctx.beginPath(); ctx.arc(M + P + 7, by + 14, 3.5, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.fillStyle = INK;
+      r.runs.forEach(function (run) {
+        font(ctx, run.b ? 700 : 400, 18);
+        ctx.fillText(run.text, M + P + r.indent + run.x, by + 20);
+      });
+    });
+
+    /* role to work on */
+    rrect(ctx, M, focY, W - 2 * M, focH, 22);
+    ctx.fillStyle = TINT; ctx.fill();
+    ctx.strokeStyle = CRIMSON; ctx.lineWidth = 2; ctx.stroke();
+    font(ctx, 700, 13); spacing(ctx, 1.2); ctx.fillStyle = INK;
+    ctx.fillText('РОЛЬ, НАД ЯКОЮ Я ХОЧУ ПОПРАЦЮВАТИ:', M + P, focY + 46);
+    spacing(ctx, 0);
+    if (focusLines.length) {
+      font(ctx, 600, 22); ctx.fillStyle = INK;
+      focusLines.forEach(function (ln, k) { ctx.fillText(ln, M + P, focY + 84 + k * 34); });
+    } else {
+      dotted(ctx, M + P, W - M - P, focY + 88);
+    }
+
+    footer(ctx, W, H, M);
+    return c;
+  }
+
+  function buildChartCanvas() {
+    var ids = ratedRoles();
+    var W = 1240, M = 84, ROW = 62, top = 262;
+    var H = top + ids.length * ROW + 140;
+    var c = newCanvas(W, H), ctx = c.getContext('2d');
+    header(ctx, W, M, 'ЗАДОВОЛЕНІСТЬ', 'РОЛЯМИ', 'Шкала: 1 — найменш задоволена, 7 — найбільш задоволена.');
+
+    var labelW = 300, valW = 46;
+    var x0 = M + labelW + 20, x1 = W - M - valW, unit = (x1 - x0) / 7;
+    var plotBottom = top + ids.length * ROW;
+
+    ctx.strokeStyle = LINE; ctx.lineWidth = 1.5;
+    for (var v = 1; v <= 7; v++) {
+      ctx.beginPath(); ctx.moveTo(x0 + unit * v, top - 8); ctx.lineTo(x0 + unit * v, plotBottom); ctx.stroke();
+    }
+    ctx.textBaseline = 'middle';
+    ids.forEach(function (i, n) {
+      var cy = top + n * ROW + ROW / 2, sc = state.roles[i].score, bh = 24;
+      font(ctx, 600, 20); ctx.fillStyle = INK; ctx.textAlign = 'right';
+      ctx.fillText(fit(ctx, roleName(i), labelW), M + labelW, cy + 1);
+      ctx.fillStyle = CRIMSON;
+      var bw = unit * sc, r = 5;
+      ctx.beginPath();
+      ctx.moveTo(x0, cy - bh / 2);
+      ctx.arcTo(x0 + bw, cy - bh / 2, x0 + bw, cy + bh / 2, r);
+      ctx.arcTo(x0 + bw, cy + bh / 2, x0, cy + bh / 2, r);
+      ctx.lineTo(x0, cy + bh / 2);
+      ctx.closePath(); ctx.fill();
+      font(ctx, 700, 21); ctx.fillStyle = INK; ctx.textAlign = 'left';
+      ctx.fillText(String(sc), x1 + 16, cy + 1);
+    });
+    ctx.strokeStyle = INK; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(x0, top - 8); ctx.lineTo(x0, plotBottom); ctx.stroke();
+
+    ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'center';
+    font(ctx, 500, 16); ctx.fillStyle = MUTED;
+    for (var t = 1; t <= 7; t++) ctx.fillText(String(t), x0 + unit * t, plotBottom + 28);
+
+    ctx.textAlign = 'left';
+    font(ctx, 400, 19); ctx.fillStyle = MUTED;
+    var pre = 'Середня задоволеність: ';
+    ctx.fillText(pre, M, plotBottom + 84);
+    var px = M + ctx.measureText(pre).width;
+    font(ctx, 700, 19); ctx.fillStyle = INK;
+    var avg = fmt(average(ids)) + ' з 7';
+    ctx.fillText(avg, px, plotBottom + 84);
+    px += ctx.measureText(avg).width;
+    font(ctx, 400, 19); ctx.fillStyle = MUTED;
+    ctx.fillText('  ·  оцінено ролей: ' + ids.length, px, plotBottom + 84);
+    return c;
+  }
+
+  function fontsReady() {
+    if (!document.fonts || !document.fonts.load) return Promise.resolve();
+    var want = ['400', '600', '700', '800', 'italic 400'].map(function (w) {
+      return document.fonts.load(w + ' 20px Montserrat', 'Роль');
+    });
+    var timeout = new Promise(function (res) { setTimeout(res, 1500); });
+    return Promise.race([Promise.all(want).catch(function () {}), timeout]);
+  }
+  function download(canvas, filename) {
+    var go = function (url, revoke) {
+      var a = document.createElement('a');
+      a.href = url; a.download = filename;
+      document.body.appendChild(a); a.click(); a.remove();
+      if (revoke) setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+    };
+    if (canvas.toBlob) canvas.toBlob(function (b) { go(URL.createObjectURL(b), true); }, 'image/png');
+    else go(canvas.toDataURL('image/png'), false);
+  }
+  function fileStem(base) {
+    var d = new Date();
+    return base + '-' + d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()) + '.png';
+  }
+  document.getElementById('dl-map').addEventListener('click', function () {
+    fontsReady().then(function () { download(buildMapCanvas(), fileStem('mapa-rolovoho-dystresu')); });
+  });
+  document.getElementById('dl-chart').addEventListener('click', function () {
+    if (!ratedRoles().length) return;
+    fontsReady().then(function () { download(buildChartCanvas(), fileStem('zadovolenist-roliamy')); });
+  });
+
+  /* exposed for testing */
+  window.__roleMap = { buildMapCanvas: buildMapCanvas, buildChartCanvas: buildChartCanvas };
+
+  buildRoles();
+  show(hashStep());
+})();
+</script>
+</body>
+</html>
