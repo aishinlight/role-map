@@ -33,7 +33,14 @@
   .page { max-width: 920px; margin: 0 auto; padding: 28px 16px 64px; }
 
   /* ---------- steps nav ---------- */
-  .steps { display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap; }
+  .steps { display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap; align-items: center; }
+  .lang { margin-left: auto; display: inline-flex; border: 1.5px solid var(--line); border-radius: 999px; padding: 3px; gap: 2px; }
+  .lang button {
+    font: inherit; font-size: 12px; font-weight: 700; letter-spacing: .06em; cursor: pointer;
+    border: 0; background: none; color: var(--muted); padding: 7px 12px; border-radius: 999px;
+  }
+  .lang button:hover { color: var(--ink); }
+  .lang button[aria-pressed="true"] { background: var(--ink); color: #fff; }
   .steps a {
     display: inline-flex; align-items: center; gap: 10px;
     padding: 9px 16px 9px 10px; border: 1.5px solid var(--line); border-radius: 999px;
@@ -55,13 +62,13 @@
   .lead { margin: 0; color: var(--ink); max-width: 62ch; }
   .head { padding-bottom: 18px; border-bottom: 1.5px solid rgba(180, 35, 46, .45); margin-bottom: 24px; }
   .head-row { display: flex; gap: 16px 28px; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; }
-  .name-field { display: flex; align-items: baseline; gap: 10px; flex: 1 1 240px; max-width: 340px; }
+  .date-field { display: flex; align-items: center; gap: 10px; }
   .cap { font-size: 12px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; white-space: nowrap; }
-  .name-field input {
-    flex: 1; min-width: 0; border: 0; border-bottom: 1.5px dotted var(--muted); background: none;
-    font: inherit; color: var(--ink); padding: 2px 2px 3px; border-radius: 0;
+  .date-field input {
+    border: 0; border-bottom: 1.5px dotted var(--muted); background: none; min-width: 150px;
+    font: inherit; font-weight: 600; color: var(--ink); padding: 2px 2px 3px; border-radius: 0;
   }
-  .name-field input:focus { outline: none; border-bottom: 1.5px solid var(--crimson); }
+  .date-field input:focus { outline: none; border-bottom: 1.5px solid var(--crimson); }
   h2 { font-size: 15px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; margin: 0 0 4px; }
   .note { color: var(--muted); font-size: 14px; margin: 0; }
 
@@ -189,6 +196,8 @@
     .map { grid-template-columns: 1fr; }
     .zone { min-height: 0; }
     .roles { padding: 4px 14px; }
+    .legend .sep { display: none; }
+    .legend .cap { flex-basis: 100%; }
     .chart-box { padding: 16px 14px 12px; }
   }
   @media print {
@@ -204,88 +213,92 @@
     .pick { display: none; }
     .sum-box, .focus-box { break-inside: avoid; padding: 12px 14px; }
     .conclusion { gap: 10px; margin-top: 10px; }
-    .name-field input { border-bottom-style: dotted; }
+    .date-field input::-webkit-calendar-picker-indicator { display: none; }
   }
 </style>
 </head>
 <body>
 <div class="page">
 
-  <nav class="steps no-print" aria-label="Кроки">
-    <a href="#roli" data-step="roli" data-go="roli"><span class="n">1</span>Задоволеність ролями</a>
-    <a href="#mapa" data-step="mapa" data-go="mapa"><span class="n">2</span>Мапа дистресу</a>
+  <nav class="steps no-print" data-i18n-aria="stepsAria" aria-label="Кроки">
+    <a href="#roli" data-step="roli" data-go="roli"><span class="n">1</span><span data-i18n="nav1">Задоволеність ролями</span></a>
+    <a href="#mapa" data-step="mapa" data-go="mapa"><span class="n">2</span><span data-i18n="nav2">Мапа дистресу</span></a>
+    <div class="lang" role="group" aria-label="Мова / Language">
+      <button type="button" data-lang="uk" aria-pressed="true" title="Українська">УКР</button>
+      <button type="button" data-lang="en" aria-pressed="false" title="English">ENG</button>
+    </div>
   </nav>
 
-  <!-- ======================= КРОК 1 ======================= -->
+  <!-- ======================= STEP 1 ======================= -->
   <section id="step-roli">
     <div class="head">
-      <h1>Задоволеність <em>ролями</em></h1>
+      <h1 data-i18n-html="h1a">Задоволеність <em>ролями</em></h1>
       <div class="head-row">
-        <p class="lead">Впишіть свої ролі (до десяти) та оцініть кожну за шкалою від 1 до 7: наскільки ви задоволені цією роллю.</p>
-        <label class="name-field"><span class="cap">Ім'я:</span><input type="text" data-name maxlength="40" autocomplete="off" aria-label="Ім'я"></label>
+        <p class="lead" data-i18n="lead1">Впишіть свої ролі (до десяти) та оцініть кожну за шкалою від 1 до 7: наскільки ви задоволені цією роллю.</p>
+        <label class="date-field"><span class="cap" data-i18n="dateCap">Дата:</span><input type="date" data-date data-i18n-aria="dateAria" aria-label="Дата заповнення"></label>
       </div>
     </div>
 
-    <p class="legend"><span class="cap">Задоволеність роллю:</span><span><b>1</b> — найменш задоволена</span><span class="sep">·</span><span><b>7</b> — найбільш задоволена</span></p>
+    <p class="legend"><span class="cap" data-i18n="legendCap">Задоволеність роллю:</span><span><b>1</b> — <span data-i18n="least">найменш задоволена</span></span><span class="sep">·</span><span><b>7</b> — <span data-i18n="most">найбільш задоволена</span></span></p>
     <div class="roles" id="roles"></div>
 
     <div class="panel">
-      <h2>Діаграма задоволеності ролями</h2>
-      <p class="note">Оновлюється під час заповнення. Порожні рядки не враховуються.</p>
+      <h2 data-i18n="chartTitle">Діаграма задоволеності ролями</h2>
+      <p class="note" data-i18n="chartNote">Оновлюється під час заповнення. Порожні рядки не враховуються.</p>
       <div class="chart-box" id="chart" aria-live="polite"></div>
     </div>
 
     <div class="actions">
-      <a class="btn primary" href="#mapa" data-go="mapa">Далі: мапа дистресу →</a>
-      <button class="btn" type="button" id="dl-chart">Завантажити діаграму (PNG)</button>
+      <a class="btn primary" href="#mapa" data-go="mapa" data-i18n="next">Далі: мапа дистресу →</a>
+      <button class="btn" type="button" id="dl-chart" data-i18n="dlChart">Завантажити діаграму (PNG)</button>
       <span class="spacer"></span>
-      <button class="btn ghost" type="button" data-reset>Очистити все</button>
+      <button class="btn ghost" type="button" data-reset data-i18n="clear">Очистити все</button>
     </div>
-    <p class="privacy">Усе, що ви вписуєте, зберігається лише у вашому браузері на цьому пристрої й нікуди не надсилається.</p>
+    <p class="privacy" data-i18n="privacy1">Усе, що ви вписуєте, зберігається лише у вашому браузері на цьому пристрої й нікуди не надсилається.</p>
   </section>
 
-  <!-- ======================= КРОК 2 ======================= -->
+  <!-- ======================= STEP 2 ======================= -->
   <section id="step-mapa" hidden>
     <div class="head">
-      <h1>Мапа <em>рольового дистресу</em></h1>
+      <h1 data-i18n-html="h1b">Мапа <em>рольового дистресу</em></h1>
       <div class="head-row">
-        <p class="lead">Позначте в кожному квадраті ролі, у яких ви відчуваєте цей вид напруги.</p>
-        <label class="name-field"><span class="cap">Ім'я:</span><input type="text" data-name maxlength="40" autocomplete="off" aria-label="Ім'я"></label>
+        <p class="lead" data-i18n="lead2">Позначте в кожному квадраті ролі, у яких ви відчуваєте цей вид напруги.</p>
+        <label class="date-field"><span class="cap" data-i18n="dateCap">Дата:</span><input type="date" data-date data-i18n-aria="dateAria" aria-label="Дата заповнення"></label>
       </div>
     </div>
 
     <div class="no-roles" id="no-roles" hidden>
-      Спершу впишіть хоча б одну роль на кроці 1.<br><br>
-      <a class="btn" href="#roli" data-go="roli">← До ролей</a>
+      <span data-i18n="noRoles">Спершу впишіть хоча б одну роль на кроці 1.</span><br><br>
+      <a class="btn" href="#roli" data-go="roli" data-i18n="back">← До ролей</a>
     </div>
 
     <div class="map" id="map"></div>
 
     <div class="conclusion" id="conclusion">
       <div class="sum-box">
-        <h2>Висновок</h2>
+        <h2 data-i18n="summaryTitle">Висновок</h2>
         <div id="summary" aria-live="polite"></div>
       </div>
       <div class="focus-box">
-        <label class="cap" for="focus">Роль, над якою я хочу попрацювати:</label>
+        <label class="cap" for="focus" data-i18n="focusLabel">Роль, над якою я хочу попрацювати:</label>
         <input type="text" id="focus" maxlength="90" autocomplete="off">
         <div class="pick" id="pick"></div>
       </div>
     </div>
 
     <div class="foot">
-      <span>За матеріалами Ikigai Tribe</span>
+      <span data-i18n="footBased">За матеріалами Ikigai Tribe</span>
       <a href="https://ikigaitribe.com" target="_blank" rel="noopener">ikigaitribe.com</a>
     </div>
 
     <div class="actions">
-      <button class="btn primary" type="button" id="dl-map">Завантажити мапу (PNG)</button>
-      <button class="btn" type="button" id="print">Друк / PDF</button>
-      <label class="check"><input type="checkbox" id="clean">Показати лише обрані ролі</label>
+      <button class="btn primary" type="button" id="dl-map" data-i18n="dlMap">Завантажити мапу (PNG)</button>
+      <button class="btn" type="button" id="print" data-i18n="print">Друк / PDF</button>
+      <label class="check"><input type="checkbox" id="clean"><span data-i18n="cleanLabel">Показати лише обрані ролі</span></label>
       <span class="spacer"></span>
-      <a class="btn ghost" href="#roli" data-go="roli">← До ролей</a>
+      <a class="btn ghost" href="#roli" data-go="roli" data-i18n="back">← До ролей</a>
     </div>
-    <p class="privacy">Натисніть на роль, щоб додати її в зону; натисніть ще раз, щоб прибрати. Число поруч із роллю — ваша оцінка задоволеності цією роллю.</p>
+    <p class="privacy" data-i18n="privacy2">Натисніть на роль, щоб додати її в зону; натисніть ще раз, щоб прибрати. Число поруч із роллю — ваша оцінка задоволеності цією роллю.</p>
   </section>
 </div>
 
@@ -298,20 +311,137 @@
   var INK = '#1A1614', CRIMSON = '#B4232E', MUTED = '#6B6360', LINE = '#DAD5D1', TINT = '#FBEDEE';
   var FONT = 'Montserrat, "Segoe UI", "Helvetica Neue", Arial, sans-serif';
 
+  var LKEY = 'role-distress-map-lang';
+  var MONTHS_EN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
   var ZONES = [
-    { id: 1, title: 'Рольове перевантаження', text: 'Ця роль вимагає більше, ніж я можу стабільно давати.', single: false },
-    { id: 2, title: 'Рольове поглинання', text: 'Одна роль забирає весь мій час і увагу, залишаючи мало місця для інших ролей.', single: true },
-    { id: 3, title: 'Рольова плутанина', text: 'Я не впевнена, хто я і де мої межі в цій ролі.', single: false },
-    { id: 4, title: 'Рольова невизначеність', text: 'Я не знаю, чого від мене очікують і як виглядає успіх.', single: false },
-    { id: 5, title: 'Рольовий полон', text: 'Я відчуваю себе в пастці ролі, яку більше не обираю вільно.', single: true },
-    { id: 6, title: 'Рольовий конфлікт', text: 'Вимоги цієї ролі суперечать іншій моїй ролі.', single: false },
-    { id: 7, title: 'Рольова провина', text: 'Я відчуваю провину, що не приділяю цій ролі стільки часу, уваги чи присутності, скільки вона заслуговує.', single: false },
-    { id: 8, title: 'Рольове напруження', text: 'Виконання цієї ролі створює напругу або емоційний тиск.', single: false }
+    { id: 1, single: false,
+      uk: { title: 'Рольове перевантаження', text: 'Ця роль вимагає більше, ніж я можу стабільно давати.' },
+      en: { title: 'Role overload', text: 'This role demands more than I can sustainably give.' } },
+    { id: 2, single: true,
+      uk: { title: 'Рольове поглинання', text: 'Одна роль забирає весь мій час і увагу, залишаючи мало місця для інших ролей.' },
+      en: { title: 'Role engulfment', text: 'One role takes up all my time and attention, leaving little room for my other roles.' } },
+    { id: 3, single: false,
+      uk: { title: 'Рольова плутанина', text: 'Я не впевнена, хто я і де мої межі в цій ролі.' },
+      en: { title: 'Role confusion', text: 'I am not sure who I am or where my boundaries are in this role.' } },
+    { id: 4, single: false,
+      uk: { title: 'Рольова невизначеність', text: 'Я не знаю, чого від мене очікують і як виглядає успіх.' },
+      en: { title: 'Role ambiguity', text: 'I do not know what is expected of me or what success looks like.' } },
+    { id: 5, single: true,
+      uk: { title: 'Рольовий полон', text: 'Я відчуваю себе в пастці ролі, яку більше не обираю вільно.' },
+      en: { title: 'Role captivity', text: 'I feel trapped in a role I no longer freely choose.' } },
+    { id: 6, single: false,
+      uk: { title: 'Рольовий конфлікт', text: 'Вимоги цієї ролі суперечать іншій моїй ролі.' },
+      en: { title: 'Role conflict', text: 'The demands of this role clash with another role of mine.' } },
+    { id: 7, single: false,
+      uk: { title: 'Рольова провина', text: 'Я відчуваю провину, що не приділяю цій ролі стільки часу, уваги чи присутності, скільки вона заслуговує.' },
+      en: { title: 'Role guilt', text: 'I feel guilty that I do not give this role the time, attention or presence it deserves.' } },
+    { id: 8, single: false,
+      uk: { title: 'Рольове напруження', text: 'Виконання цієї ролі створює напругу або емоційний тиск.' },
+      en: { title: 'Role strain', text: 'Carrying out this role creates tension or emotional pressure.' } }
   ];
+
+  var I18N = {
+    uk: {
+      docTitle: 'Мапа рольового дистресу', stepsAria: 'Кроки',
+      nav1: 'Задоволеність ролями', nav2: 'Мапа дистресу',
+      h1a: 'Задоволеність <em>ролями</em>', h1b: 'Мапа <em>рольового дистресу</em>',
+      lead1: 'Впишіть свої ролі (до десяти) та оцініть кожну за шкалою від 1 до 7: наскільки ви задоволені цією роллю.',
+      lead2: 'Позначте в кожному квадраті ролі, у яких ви відчуваєте цей вид напруги.',
+      dateCap: 'Дата:', dateAria: 'Дата заповнення',
+      legendCap: 'Задоволеність роллю:', least: 'найменш задоволена', most: 'найбільш задоволена',
+      chartTitle: 'Діаграма задоволеності ролями',
+      chartNote: 'Оновлюється під час заповнення. Порожні рядки не враховуються.',
+      chartEmpty: "Впишіть роль та оберіть оцінку — діаграма з'явиться тут.",
+      next: 'Далі: мапа дистресу →', dlChart: 'Завантажити діаграму (PNG)', clear: 'Очистити все',
+      privacy1: 'Усе, що ви вписуєте, зберігається лише у вашому браузері на цьому пристрої й нікуди не надсилається.',
+      privacy2: 'Натисніть на роль, щоб додати її в зону; натисніть ще раз, щоб прибрати. Число поруч із роллю — ваша оцінка задоволеності цією роллю.',
+      noRoles: 'Спершу впишіть хоча б одну роль на кроці 1.', back: '← До ролей',
+      summaryTitle: 'Висновок', focusLabel: 'Роль, над якою я хочу попрацювати:',
+      footBased: 'За матеріалами Ikigai Tribe',
+      dlMap: 'Завантажити мапу (PNG)', print: 'Друк / PDF', cleanLabel: 'Показати лише обрані ролі',
+      ph1: 'Наприклад: мама, керівниця, донька…', ph: 'Роль', roleAria: 'Роль',
+      scaleAria: 'Задоволеність роллю {n}, від 1 до 7', outOf7: 'з 7',
+      avg: 'Середня задоволеність: ', rated: 'оцінено ролей: ', unrated: 'без оцінки: ',
+      capOne: 'Роль:', capMany: 'Роль/ролі:',
+      sumEmpty: "Позначте ролі в зонах — висновок з'явиться тут.", sumEmptyPng: 'Ролі в зонах не позначено.',
+      sumMost: 'Найбільше видів напруги: ', sumMostEnd: ' — {n} з 8 зон.',
+      sumLow: 'Найнижча задоволеність: ', sumLowEnd: ' — {n} з 7.',
+      sumFree: 'Без позначеної напруги: ', sat: 'задоволеність', byRole: 'Напруга за ролями:',
+      pickHint: 'Обрати зі своїх ролей:', confirmClear: 'Стерти всі ролі, оцінки та мапу?',
+      pngSub: 'Ролі, у яких я відчуваю цей вид напруги.',
+      pngScale: 'Шкала: 1 — найменш задоволена, 7 — найбільш задоволена.',
+      fileMap: 'mapa-rolovoho-dystresu', fileChart: 'zadovolenist-roliamy', decimal: ',',
+      titleMap: [{ t: 'МАПА' }, { t: 'РОЛЬОВОГО ДИСТРЕСУ', red: true }],
+      titleChart: [{ t: 'ЗАДОВОЛЕНІСТЬ' }, { t: 'РОЛЯМИ', red: true }]
+    },
+    en: {
+      docTitle: 'Role Distress Map', stepsAria: 'Steps',
+      nav1: 'Role satisfaction', nav2: 'Distress map',
+      h1a: 'Role <em>satisfaction</em>', h1b: '<em>Role distress</em> map',
+      lead1: 'Write down your roles (up to ten) and rate each one on a scale from 1 to 7: how satisfied you are with this role.',
+      lead2: 'In each box, mark the roles in which you feel this type of distress.',
+      dateCap: 'Date:', dateAria: 'Date completed',
+      legendCap: 'Role satisfaction:', least: 'least satisfied', most: 'most satisfied',
+      chartTitle: 'Role satisfaction chart',
+      chartNote: 'Updates as you fill it in. Empty rows are not counted.',
+      chartEmpty: 'Enter a role and choose a rating — the chart will appear here.',
+      next: 'Next: distress map →', dlChart: 'Download chart (PNG)', clear: 'Clear all',
+      privacy1: 'Everything you enter is stored only in your browser on this device and is not sent anywhere.',
+      privacy2: 'Tap a role to add it to a zone; tap again to remove it. The number next to a role is your satisfaction rating for it.',
+      noRoles: 'First enter at least one role in step 1.', back: '← Back to roles',
+      summaryTitle: 'Summary', focusLabel: 'The role I want to work on:',
+      footBased: 'Based on Ikigai Tribe materials',
+      dlMap: 'Download map (PNG)', print: 'Print / PDF', cleanLabel: 'Show selected roles only',
+      ph1: 'For example: mother, manager, daughter…', ph: 'Role', roleAria: 'Role',
+      scaleAria: 'Satisfaction with role {n}, from 1 to 7', outOf7: 'out of 7',
+      avg: 'Average satisfaction: ', rated: 'roles rated: ', unrated: 'not rated: ',
+      capOne: 'Role:', capMany: 'Role(s):',
+      sumEmpty: 'Mark roles in the zones — the summary will appear here.', sumEmptyPng: 'No roles marked in the zones.',
+      sumMost: 'Most types of distress: ', sumMostEnd: ' — {n} of 8 zones.',
+      sumLow: 'Lowest satisfaction: ', sumLowEnd: ' — {n} out of 7.',
+      sumFree: 'No distress marked: ', sat: 'satisfaction', byRole: 'Distress by role:',
+      pickHint: 'Choose from your roles:', confirmClear: 'Clear all roles, ratings and the map?',
+      pngSub: 'Roles in which I feel this type of distress.',
+      pngScale: 'Scale: 1 — least satisfied, 7 — most satisfied.',
+      fileMap: 'role-distress-map', fileChart: 'role-satisfaction', decimal: '.',
+      titleMap: [{ t: 'ROLE DISTRESS', red: true }, { t: 'MAP' }],
+      titleChart: [{ t: 'ROLE' }, { t: 'SATISFACTION', red: true }]
+    }
+  };
+
+  /* Ukrainian is the default; ?lang=en in the address (or the switch) gives English. */
+  function initialLang() {
+    var q = '';
+    try { q = (new URLSearchParams(location.search).get('lang') || '').toLowerCase(); } catch (e) {}
+    if (q === 'en') return 'en';
+    if (q === 'uk' || q === 'ua') return 'uk';
+    try { var saved = localStorage.getItem(LKEY); if (saved === 'en' || saved === 'uk') return saved; } catch (e) {}
+    return 'uk';
+  }
+  var lang = initialLang();
+  function t(key, n) {
+    var v = I18N[lang][key];
+    return (typeof v === 'string' && n != null) ? v.replace('{n}', n) : v;
+  }
+  function zt(z) { return z[lang]; }
+  function pad2(n) { return (n < 10 ? '0' : '') + n; }
+  function todayISO() {
+    var d = new Date();
+    return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+  }
+  function validISO(v) { return typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v); }
+  function fmtDate(iso) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
+    if (!m) return '';
+    if (lang === 'en') return (+m[3]) + ' ' + MONTHS_EN[+m[2] - 1] + ' ' + m[1];
+    return m[3] + '.' + m[2] + '.' + m[1];
+  }
 
   /* ---------------- state ---------------- */
   function blankState() {
-    var s = { name: '', focus: '', roles: [], zones: {}, clean: false };
+    /* date = today unless the person changed it (dateManual) */
+    var s = { date: todayISO(), dateManual: false, focus: '', roles: [], zones: {}, clean: false };
     for (var i = 0; i < MAX; i++) s.roles.push({ name: '', score: null });
     ZONES.forEach(function (z) { s.zones[z.id] = []; });
     return s;
@@ -321,7 +451,7 @@
     try {
       var raw = JSON.parse(localStorage.getItem(KEY) || 'null');
       if (raw && Array.isArray(raw.roles)) {
-        s.name = typeof raw.name === 'string' ? raw.name : '';
+        if (raw.dateManual && validISO(raw.date)) { s.date = raw.date; s.dateManual = true; }
         s.clean = !!raw.clean;
         s.focus = typeof raw.focus === 'string' ? raw.focus : '';
         for (var i = 0; i < MAX; i++) {
@@ -354,7 +484,6 @@
   function zoneRoles(zid) {
     return state.zones[zid].filter(function (i) { return roleName(i); });
   }
-  function pad2(n) { return (n < 10 ? '0' : '') + n; }
   function el(tag, cls, text) {
     var e = document.createElement(tag);
     if (cls) e.className = cls;
@@ -373,14 +502,14 @@
       var input = document.createElement('input');
       input.type = 'text'; input.maxLength = 40; input.autocomplete = 'off';
       input.value = r.name;
-      input.placeholder = i === 0 ? 'Наприклад: мама, керівниця, донька…' : 'Роль';
-      input.setAttribute('aria-label', 'Роль ' + (i + 1));
+      input.placeholder = i === 0 ? t('ph1') : t('ph');
+      input.setAttribute('aria-label', t('roleAria') + ' ' + (i + 1));
       input.addEventListener('input', function () { r.name = input.value; save(); renderChart(); });
       row.appendChild(input);
 
       var scale = el('div', 'scale');
       scale.setAttribute('role', 'radiogroup');
-      scale.setAttribute('aria-label', 'Задоволеність роллю ' + (i + 1) + ', від 1 до 7');
+      scale.setAttribute('aria-label', t('scaleAria', i + 1));
       for (var v = 1; v <= 7; v++) (function (v) {
         var b = el('button', null, String(v));
         b.type = 'button';
@@ -407,20 +536,20 @@
     ids.forEach(function (i) { sum += state.roles[i].score; });
     return sum / ids.length;
   }
-  function fmt(n) { return n.toFixed(1).replace('.', ','); }
+  function fmt(n) { return n.toFixed(1).replace('.', t('decimal')); }
 
   function renderChart() {
     var ids = ratedRoles();
     chartEl.textContent = '';
     document.getElementById('dl-chart').disabled = !ids.length;
     if (!ids.length) {
-      chartEl.appendChild(el('p', 'chart-empty', 'Впишіть роль та оберіть оцінку — діаграма з\'явиться тут.'));
+      chartEl.appendChild(el('p', 'chart-empty', t('chartEmpty')));
       return;
     }
     ids.forEach(function (i) {
       var r = state.roles[i];
       var row = el('div', 'c-row');
-      row.title = roleName(i) + ': ' + r.score + ' з 7';
+      row.title = roleName(i) + ': ' + r.score + ' ' + t('outOf7');
       row.appendChild(el('div', 'c-label', roleName(i)));
       var track = el('div', 'c-track');
       var bar = el('div', 'c-bar');
@@ -441,11 +570,11 @@
     chartEl.appendChild(axis);
 
     var sum = el('p', 'c-sum');
-    sum.appendChild(document.createTextNode('Середня задоволеність: '));
-    sum.appendChild(el('b', null, fmt(average(ids)) + ' з 7'));
-    sum.appendChild(document.createTextNode(' · оцінено ролей: ' + ids.length));
+    sum.appendChild(document.createTextNode(t('avg')));
+    sum.appendChild(el('b', null, fmt(average(ids)) + ' ' + t('outOf7')));
+    sum.appendChild(document.createTextNode(' · ' + t('rated') + ids.length));
     var unrated = namedRoles().length - ids.length;
-    if (unrated > 0) sum.appendChild(document.createTextNode(' · без оцінки: ' + unrated));
+    if (unrated > 0) sum.appendChild(document.createTextNode(' · ' + t('unrated') + unrated));
     chartEl.appendChild(sum);
   }
 
@@ -463,10 +592,10 @@
       var box = el('div', 'zone' + (chosen.length ? '' : ' is-empty'));
       var h = el('h3');
       h.appendChild(el('span', 'zn', pad2(z.id)));
-      h.appendChild(document.createTextNode(z.title));
+      h.appendChild(document.createTextNode(zt(z).title));
       box.appendChild(h);
-      box.appendChild(el('p', null, z.text));
-      box.appendChild(el('span', 'cap', z.single ? 'Роль:' : 'Роль/ролі:'));
+      box.appendChild(el('p', null, zt(z).text));
+      box.appendChild(el('span', 'cap', z.single ? t('capOne') : t('capMany')));
 
       var chips = el('div', 'chips');
       ids.forEach(function (i) {
@@ -497,8 +626,7 @@
   }
 
   /* ---------------- step 2: conclusion ---------------- */
-  var EMPTY_SUMMARY = 'Позначте ролі в зонах — висновок з\'явиться тут.';
-  function zoneShort(z) { return z.title.split(' ')[1].toLowerCase(); }
+  function zoneShort(z) { return zt(z).title.split(' ')[1].toLowerCase(); }
   function joinNames(list) { return list.map(function (p) { return p.name; }).join(', '); }
   /* Text is built as segments {t: text, b: bold} so the page and the PNG share it. */
   function summary() {
@@ -514,22 +642,22 @@
     if (marked.length) {
       var top = marked[0].zones.length;
       var tops = marked.filter(function (p) { return p.zones.length === top; });
-      lines.push([{ t: 'Найбільше видів напруги: ' }, { t: joinNames(tops), b: true }, { t: ' — ' + top + ' з 8 зон.' }]);
+      lines.push([{ t: t('sumMost') }, { t: joinNames(tops), b: true }, { t: t('sumMostEnd', top) }]);
       var rated = per.filter(function (p) { return p.score; });
       if (rated.length > 1) {
         var min = Math.min.apply(null, rated.map(function (p) { return p.score; }));
         var max = Math.max.apply(null, rated.map(function (p) { return p.score; }));
         if (min < max) {
           var lows = rated.filter(function (p) { return p.score === min; });
-          lines.push([{ t: 'Найнижча задоволеність: ' }, { t: joinNames(lows), b: true }, { t: ' — ' + min + ' з 7.' }]);
+          lines.push([{ t: t('sumLow') }, { t: joinNames(lows), b: true }, { t: t('sumLowEnd', min) }]);
         }
       }
-      if (free.length) lines.push([{ t: 'Без позначеної напруги: ' }, { t: joinNames(free), b: true }, { t: '.' }]);
+      if (free.length) lines.push([{ t: t('sumFree') }, { t: joinNames(free), b: true }, { t: '.' }]);
     }
     return {
       lines: lines,
       roles: marked.map(function (p) {
-        return [{ t: p.name, b: true }, { t: p.score ? ' (задоволеність ' + p.score + ')' : '' },
+        return [{ t: p.name, b: true }, { t: p.score ? ' (' + t('sat') + ' ' + p.score + ')' : '' },
                 { t: ' — ' + p.zones.join(', ') + '.' }];
       })
     };
@@ -548,7 +676,7 @@
     var pick = document.getElementById('pick'), ids = namedRoles();
     pick.textContent = '';
     if (!ids.length) return;
-    pick.appendChild(el('span', 'hint', 'Обрати зі своїх ролей:'));
+    pick.appendChild(el('span', 'hint', t('pickHint')));
     ids.forEach(function (i) {
       var c = el('button', 'chip', roleName(i));
       c.type = 'button';
@@ -564,10 +692,10 @@
     document.getElementById('conclusion').hidden = !namedRoles().length;
     var box = document.getElementById('summary'), S = summary();
     box.textContent = '';
-    if (!S.lines.length) box.appendChild(el('p', 'empty', EMPTY_SUMMARY));
+    if (!S.lines.length) box.appendChild(el('p', 'empty', t('sumEmpty')));
     S.lines.forEach(function (l) { box.appendChild(segsTo(el('p'), l)); });
     if (S.roles.length) {
-      box.appendChild(el('span', 'cap', 'Напруга за ролями:'));
+      box.appendChild(el('span', 'cap', t('byRole')));
       var ul = el('ul');
       S.roles.forEach(function (r) { ul.appendChild(segsTo(el('li'), r)); });
       box.appendChild(ul);
@@ -576,13 +704,45 @@
   }
 
   /* ---------------- shared bits ---------------- */
-  var nameInputs = document.querySelectorAll('[data-name]');
-  Array.prototype.forEach.call(nameInputs, function (inp) {
-    inp.value = state.name;
+  var dateInputs = document.querySelectorAll('[data-date]');
+  function syncDates(except) {
+    Array.prototype.forEach.call(dateInputs, function (o) { if (o !== except) o.value = state.date; });
+  }
+  Array.prototype.forEach.call(dateInputs, function (inp) {
     inp.addEventListener('input', function () {
-      state.name = inp.value;
-      Array.prototype.forEach.call(nameInputs, function (o) { if (o !== inp) o.value = state.name; });
-      save();
+      state.date = inp.value;
+      state.dateManual = !!inp.value;   /* cleared field goes back to "today" next time */
+      syncDates(inp); save();
+    });
+  });
+  syncDates(null);
+
+  function applyLang() {
+    document.documentElement.lang = lang;
+    document.title = t('docTitle');
+    Array.prototype.forEach.call(document.querySelectorAll('[data-i18n]'), function (n) {
+      n.textContent = t(n.getAttribute('data-i18n'));
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-i18n-html]'), function (n) {
+      n.innerHTML = t(n.getAttribute('data-i18n-html'));   /* fixed strings from I18N only */
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-i18n-aria]'), function (n) {
+      n.setAttribute('aria-label', t(n.getAttribute('data-i18n-aria')));
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-lang]'), function (b) {
+      b.setAttribute('aria-pressed', b.getAttribute('data-lang') === lang ? 'true' : 'false');
+    });
+    buildRoles(); renderChart(); renderMap();
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-lang]'), function (b) {
+    b.addEventListener('click', function () {
+      lang = b.getAttribute('data-lang') === 'en' ? 'en' : 'uk';
+      try { localStorage.setItem(LKEY, lang); } catch (e) {}
+      try {
+        var hash = location.hash || '';
+        history.replaceState(null, '', location.pathname + (lang === 'en' ? '?lang=en' : '') + hash);
+      } catch (e) {}
+      applyLang();
     });
   });
 
@@ -591,9 +751,9 @@
   });
   document.getElementById('print').addEventListener('click', function () { window.print(); });
   document.querySelector('[data-reset]').addEventListener('click', function () {
-    if (!confirm('Стерти всі ролі, оцінки та мапу?')) return;
+    if (!confirm(t('confirmClear'))) return;
     state = blankState(); save();
-    Array.prototype.forEach.call(nameInputs, function (o) { o.value = ''; });
+    syncDates(null);
     focusEl.value = '';
     buildRoles(); renderChart(); renderMap();
   });
@@ -646,18 +806,18 @@
   function wrap(ctx, text, maxW) {
     var words = text.split(/\s+/), lines = [], cur = '';
     words.forEach(function (w) {
-      var t = cur ? cur + ' ' + w : w;
-      if (cur && ctx.measureText(t).width > maxW) { lines.push(cur); cur = w; }
-      else cur = t;
+      var next = cur ? cur + ' ' + w : w;
+      if (cur && ctx.measureText(next).width > maxW) { lines.push(cur); cur = w; }
+      else cur = next;
     });
     if (cur) lines.push(cur);
     return lines;
   }
   function fit(ctx, text, maxW) {
     if (ctx.measureText(text).width <= maxW) return text;
-    var t = text;
-    while (t.length > 1 && ctx.measureText(t + '…').width > maxW) t = t.slice(0, -1);
-    return t + '…';
+    var cut = text;
+    while (cut.length > 1 && ctx.measureText(cut + '…').width > maxW) cut = cut.slice(0, -1);
+    return cut + '…';
   }
   function dotted(ctx, x1, x2, y) {
     ctx.save();
@@ -665,24 +825,29 @@
     ctx.beginPath(); ctx.moveTo(x1, y); ctx.lineTo(x2, y); ctx.stroke();
     ctx.restore();
   }
-  function header(ctx, W, M, black, red, sub) {
+  function header(ctx, W, M, parts, sub) {
     ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'left';
+    var full = parts.map(function (p) { return p.t; }).join(' ');
     var ts = 54; spacing(ctx, 0);
     font(ctx, 800, ts);
-    while (ts > 34 && ctx.measureText(black + ' ' + red).width > W - 2 * M) { ts -= 2; font(ctx, 800, ts); }
-    ctx.fillStyle = INK; ctx.fillText(black, M, 128);
-    ctx.fillStyle = CRIMSON; ctx.fillText(red, M + ctx.measureText(black + ' ').width, 128);
+    while (ts > 34 && ctx.measureText(full).width > W - 2 * M) { ts -= 2; font(ctx, 800, ts); }
+    var tx = M;
+    parts.forEach(function (p) {
+      ctx.fillStyle = p.red ? CRIMSON : INK;
+      ctx.fillText(p.t, tx, 128);
+      tx += ctx.measureText(p.t + ' ').width;
+    });
 
-    var nm = state.name.trim();
+    var cap = t('dateCap').toUpperCase(), dt = fmtDate(state.date);
     font(ctx, 700, 14); spacing(ctx, 1.2);
-    var capW = ctx.measureText('ІМ\'Я:').width + 12;
+    var capW = ctx.measureText(cap).width + 12;
     spacing(ctx, 0); font(ctx, 600, 19);
-    var nameW = Math.max(190, Math.min(300, ctx.measureText(nm).width + 10));
-    var nx = W - M - nameW;
-    if (nm) { ctx.fillStyle = INK; ctx.fillText(fit(ctx, nm, nameW), nx, 178); }
+    var valW = Math.max(150, ctx.measureText(dt).width + 10);
+    var nx = W - M - valW;
+    if (dt) { ctx.fillStyle = INK; ctx.fillText(dt, nx, 178); }
     dotted(ctx, nx, W - M, 184);
     font(ctx, 700, 14); spacing(ctx, 1.2);
-    ctx.fillStyle = INK; ctx.fillText('ІМ\'Я:', nx - capW, 178);
+    ctx.fillStyle = INK; ctx.fillText(cap, nx - capW, 178);
     spacing(ctx, 0);
 
     font(ctx, 400, 19); ctx.fillStyle = INK;
@@ -694,7 +859,7 @@
   function footer(ctx, W, H, M) {
     ctx.textBaseline = 'alphabetic';
     font(ctx, 400, 17, true); ctx.fillStyle = MUTED; ctx.textAlign = 'left';
-    ctx.fillText('За матеріалами Ikigai Tribe', M, H - 56);
+    ctx.fillText(t('footBased'), M, H - 56);
     font(ctx, 700, 17); ctx.fillStyle = CRIMSON; ctx.textAlign = 'right';
     ctx.fillText('ikigaitribe.com', W - M, H - 56);
     ctx.textAlign = 'left';
@@ -748,10 +913,10 @@
       });
       y += gapAfter;
     }
-    if (!S.lines.length) add([{ t: 'Ролі в зонах не позначено.' }], 0, false, 0);
+    if (!S.lines.length) add([{ t: t('sumEmptyPng') }], 0, false, 0);
     S.lines.forEach(function (l) { add(l, 0, false, 4); });
     if (S.roles.length) {
-      y += 12; rows.push({ y: y, cap: 'НАПРУГА ЗА РОЛЯМИ:' }); y += 32;
+      y += 12; rows.push({ y: y, cap: t('byRole').toUpperCase() }); y += 32;
       S.roles.forEach(function (r) { add(r, 24, true, 2); });
     }
     return { rows: rows, h: y };
@@ -771,7 +936,7 @@
     var H = focY + focH + 106;
 
     var c = newCanvas(W, H), ctx = c.getContext('2d');
-    header(ctx, W, M, 'МАПА', 'РОЛЬОВОГО ДИСТРЕСУ', 'Ролі, у яких я відчуваю цей вид напруги.');
+    header(ctx, W, M, t('titleMap'), t('pngSub'));
 
     var bw = (W - 2 * M - GAP) / 2, bh = (bottom - top - 3 * GAP) / 4;
 
@@ -782,16 +947,16 @@
 
       font(ctx, 700, 15); ctx.fillStyle = CRIMSON; ctx.fillText(pad2(z.id), x + P, y + 52);
       font(ctx, 800, 21); spacing(ctx, 0.4); ctx.fillStyle = INK;
-      ctx.fillText(fit(ctx, z.title.toUpperCase(), bw - 2 * P - 36), x + P + 36, y + 52);
+      ctx.fillText(fit(ctx, zt(z).title.toUpperCase(), bw - 2 * P - 36), x + P + 36, y + 52);
       spacing(ctx, 0);
 
       font(ctx, 400, 18); ctx.fillStyle = INK;
       var ty = y + 88;
-      wrap(ctx, z.text, bw - 2 * P).slice(0, 3).forEach(function (ln) { ctx.fillText(ln, x + P, ty); ty += 27; });
+      wrap(ctx, zt(z).text, bw - 2 * P).slice(0, 3).forEach(function (ln) { ctx.fillText(ln, x + P, ty); ty += 27; });
 
       var capY = ty + 20;
       font(ctx, 700, 13); spacing(ctx, 1.2); ctx.fillStyle = INK;
-      ctx.fillText(z.single ? 'РОЛЬ:' : 'РОЛЬ/РОЛІ:', x + P, capY);
+      ctx.fillText((z.single ? t('capOne') : t('capMany')).toUpperCase(), x + P, capY);
       spacing(ctx, 0);
 
       var chosen = zoneRoles(z.id);
@@ -826,7 +991,7 @@
     rrect(ctx, M, sumY, W - 2 * M, sumH, 22);
     ctx.strokeStyle = INK; ctx.lineWidth = 2; ctx.stroke();
     font(ctx, 800, 21); spacing(ctx, 0.4); ctx.fillStyle = INK; ctx.textAlign = 'left';
-    ctx.fillText('ВИСНОВОК', M + P, sumY + 52);
+    ctx.fillText(t('summaryTitle').toUpperCase(), M + P, sumY + 52);
     spacing(ctx, 0);
     sum.rows.forEach(function (r) {
       var by = sumY + 76 + r.y;
@@ -850,7 +1015,7 @@
     ctx.fillStyle = TINT; ctx.fill();
     ctx.strokeStyle = CRIMSON; ctx.lineWidth = 2; ctx.stroke();
     font(ctx, 700, 13); spacing(ctx, 1.2); ctx.fillStyle = INK;
-    ctx.fillText('РОЛЬ, НАД ЯКОЮ Я ХОЧУ ПОПРАЦЮВАТИ:', M + P, focY + 46);
+    ctx.fillText(t('focusLabel').toUpperCase(), M + P, focY + 46);
     spacing(ctx, 0);
     if (focusLines.length) {
       font(ctx, 600, 22); ctx.fillStyle = INK;
@@ -868,7 +1033,7 @@
     var W = 1240, M = 84, ROW = 62, top = 262;
     var H = top + ids.length * ROW + 140;
     var c = newCanvas(W, H), ctx = c.getContext('2d');
-    header(ctx, W, M, 'ЗАДОВОЛЕНІСТЬ', 'РОЛЯМИ', 'Шкала: 1 — найменш задоволена, 7 — найбільш задоволена.');
+    header(ctx, W, M, t('titleChart'), t('pngScale'));
 
     var labelW = 300, valW = 46;
     var x0 = M + labelW + 20, x1 = W - M - valW, unit = (x1 - x0) / 7;
@@ -899,19 +1064,19 @@
 
     ctx.textBaseline = 'alphabetic'; ctx.textAlign = 'center';
     font(ctx, 500, 16); ctx.fillStyle = MUTED;
-    for (var t = 1; t <= 7; t++) ctx.fillText(String(t), x0 + unit * t, plotBottom + 28);
+    for (var k = 1; k <= 7; k++) ctx.fillText(String(k), x0 + unit * k, plotBottom + 28);
 
     ctx.textAlign = 'left';
     font(ctx, 400, 19); ctx.fillStyle = MUTED;
-    var pre = 'Середня задоволеність: ';
+    var pre = t('avg');
     ctx.fillText(pre, M, plotBottom + 84);
     var px = M + ctx.measureText(pre).width;
     font(ctx, 700, 19); ctx.fillStyle = INK;
-    var avg = fmt(average(ids)) + ' з 7';
+    var avg = fmt(average(ids)) + ' ' + t('outOf7');
     ctx.fillText(avg, px, plotBottom + 84);
     px += ctx.measureText(avg).width;
     font(ctx, 400, 19); ctx.fillStyle = MUTED;
-    ctx.fillText('  ·  оцінено ролей: ' + ids.length, px, plotBottom + 84);
+    ctx.fillText('  ·  ' + t('rated') + ids.length, px, plotBottom + 84);
     return c;
   }
 
@@ -934,22 +1099,22 @@
     else go(canvas.toDataURL('image/png'), false);
   }
   function fileStem(base) {
-    var d = new Date();
-    return base + '-' + d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()) + '.png';
+    return base + '-' + (validISO(state.date) ? state.date : todayISO()) + '.png';
   }
   document.getElementById('dl-map').addEventListener('click', function () {
-    fontsReady().then(function () { download(buildMapCanvas(), fileStem('mapa-rolovoho-dystresu')); });
+    fontsReady().then(function () { download(buildMapCanvas(), fileStem(t('fileMap'))); });
   });
   document.getElementById('dl-chart').addEventListener('click', function () {
     if (!ratedRoles().length) return;
-    fontsReady().then(function () { download(buildChartCanvas(), fileStem('zadovolenist-roliamy')); });
+    fontsReady().then(function () { download(buildChartCanvas(), fileStem(t('fileChart'))); });
   });
 
   /* exposed for testing */
   window.__roleMap = { buildMapCanvas: buildMapCanvas, buildChartCanvas: buildChartCanvas };
 
-  buildRoles();
-  show(hashStep());
+  current = hashStep();
+  applyLang();
+  show(current);
 })();
 </script>
 </body>
