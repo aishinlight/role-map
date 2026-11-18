@@ -179,6 +179,7 @@
   .sum-box li::marker { color: var(--crimson); }
   .focus-box { border: 1.5px solid var(--crimson); background: var(--tint); border-radius: 18px; padding: 18px 20px 20px; }
   .focus-box label { display: block; margin-bottom: 6px; white-space: normal; }
+  .focus-box .focus-q { margin: 0 0 8px; font-size: 14.5px; font-style: italic; }
   .focus-box input {
     width: 100%; border: 0; border-bottom: 1.5px dotted var(--muted); background: none; border-radius: 0;
     font: inherit; font-weight: 600; font-size: 17px; color: var(--ink); padding: 6px 2px;
@@ -188,6 +189,66 @@
   .pick .hint { font-size: 12.5px; color: var(--muted); margin-right: 4px; }
   .map.clean ~ .conclusion .pick { display: none; }
   .privacy { margin-top: 18px; font-size: 12.5px; color: var(--muted); }
+
+  /* ---------- facilitator questions (step 2) ---------- */
+  .zone .fac {
+    display: none; margin: -6px 0 14px; padding: 8px 12px; border-left: 3px solid var(--crimson);
+    background: var(--soft); font-size: 13px; font-style: italic; color: var(--ink); border-radius: 0 8px 8px 0;
+  }
+  .map.facil .zone .fac { display: block; }
+
+  /* ---------- baseline comparison (step 1 chart) ---------- */
+  .chart-box { --valw: 26px; }
+  .chart-box.has-base { --valw: 66px; }
+  .c-row, .c-axis { grid-template-columns: minmax(84px, 30%) minmax(0, 1fr) var(--valw); }
+  .c-ghost {
+    position: absolute; left: 0; top: 50%; height: 26px; margin-top: -13px;
+    border: 1.5px dashed var(--muted); border-left: 0; border-radius: 0 5px 5px 0; pointer-events: none;
+  }
+  .c-val small { font-size: 12px; font-weight: 700; margin-left: 4px; color: var(--muted); }
+  .c-val small.up { color: #2E7D4F; }
+  .c-val small.down { color: var(--crimson); }
+  .base-note { display: flex; gap: 6px 14px; flex-wrap: wrap; align-items: center; margin-top: 10px; font-size: 13px; color: var(--muted); }
+  .base-note .key { display: inline-block; width: 22px; height: 12px; border: 1.5px dashed var(--muted); border-left: 0; vertical-align: -1px; margin-right: 6px; }
+
+  /* ---------- session tools ---------- */
+  .session { display: flex; gap: 6px 10px; flex-wrap: wrap; align-items: center; margin-top: 10px; }
+  .session .cap { color: var(--muted); margin-right: 4px; }
+  .btn.small { padding: 8px 14px; font-size: 13px; font-weight: 600; border-color: var(--line); }
+  .btn.small:hover { border-color: var(--ink); }
+  .msg { font-size: 13px; font-weight: 600; color: var(--crimson); }
+
+  /* ---------- step 3: from map to action ---------- */
+  .plan { display: grid; gap: 16px; }
+  .card { border: 1.5px solid var(--ink); border-radius: 18px; padding: 18px 20px 20px; }
+  .card.accent { border-color: var(--crimson); background: var(--tint); }
+  .card h2 { margin-bottom: 6px; }
+  .card .note { margin-bottom: 12px; }
+  .card .cap { display: block; margin: 14px 0 6px; font-size: 11px; }
+  .card .cap:first-child { margin-top: 0; }
+  .q { margin: 0 0 6px; font-size: 14.5px; font-weight: 600; }
+  .card textarea, .card input[type="text"], .card input[type="date"] {
+    width: 100%; border: 0; border-bottom: 1.5px dotted var(--muted); background: none; border-radius: 0;
+    font: inherit; font-size: 15.5px; color: var(--ink); padding: 6px 2px; resize: none; overflow: hidden;
+    min-height: 34px; line-height: 1.45;
+  }
+  .card input[type="date"] { max-width: 220px; font-weight: 600; }
+  .card textarea:focus, .card input:focus { outline: none; border-bottom: 1.5px solid var(--crimson); }
+  .focus-name { font-size: clamp(22px, 4.4vw, 30px); font-weight: 800; line-height: 1.15; margin: 2px 0 6px; }
+  .focus-meta { margin: 0; font-size: 14.5px; }
+  .focus-meta b { color: var(--crimson); }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 0; }
+  .tag { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: #fff; border: 1.5px solid var(--crimson); color: var(--crimson); }
+  .tag.plain { border-color: var(--line); color: var(--muted); }
+  .cluster { padding: 16px 0 4px; border-top: 1px solid var(--line); }
+  .cluster:first-child { border-top: 0; padding-top: 4px; }
+  .cluster h3 { margin: 0 0 4px; font-size: 14px; font-weight: 800; letter-spacing: .03em; text-transform: uppercase; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+  .cluster h3 .zn { color: var(--crimson); font-size: 12px; font-weight: 700; text-transform: none; letter-spacing: 0; }
+  .cluster .who { font-size: 13px; color: var(--muted); margin: 0 0 8px; }
+  .two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 20px; }
+  .scale.ten { flex-wrap: wrap; }
+  .scale.ten button { width: 34px; height: 34px; }
+  .empty-note { color: var(--muted); font-size: 14px; margin: 0; }
   [hidden] { display: none !important; }
 
   @media (max-width: 680px) {
@@ -199,6 +260,8 @@
     .legend .sep { display: none; }
     .legend .cap { flex-basis: 100%; }
     .chart-box { padding: 16px 14px 12px; }
+    .two { grid-template-columns: 1fr; }
+    .card { padding: 16px 16px 18px; }
   }
   @media print {
     @page { size: A4; margin: 12mm; }
@@ -214,6 +277,12 @@
     .sum-box, .focus-box { break-inside: avoid; padding: 12px 14px; }
     .conclusion { gap: 10px; margin-top: 10px; }
     .date-field input::-webkit-calendar-picker-indicator { display: none; }
+    .card input::-webkit-calendar-picker-indicator { display: none; }
+    .session, .msg, #focus-pick { display: none !important; }
+    .card, .cluster { break-inside: avoid; }
+    .card { padding: 12px 14px; }
+    .plan { gap: 10px; }
+    .card.accent, .tag { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   }
 </style>
 </head>
@@ -223,6 +292,7 @@
   <nav class="steps no-print" data-i18n-aria="stepsAria" aria-label="Кроки">
     <a href="#roli" data-step="roli" data-go="roli"><span class="n">1</span><span data-i18n="nav1">Задоволеність ролями</span></a>
     <a href="#mapa" data-step="mapa" data-go="mapa"><span class="n">2</span><span data-i18n="nav2">Мапа дистресу</span></a>
+    <a href="#diya" data-step="diya" data-go="diya"><span class="n">3</span><span data-i18n="nav3">Від мапи до дії</span></a>
     <div class="lang" role="group" aria-label="Мова / Language">
       <button type="button" data-lang="uk" aria-pressed="true" title="Українська">УКР</button>
       <button type="button" data-lang="en" aria-pressed="false" title="English">ENG</button>
@@ -239,7 +309,7 @@
       </div>
     </div>
 
-    <p class="legend"><span class="cap" data-i18n="legendCap">Задоволеність роллю:</span><span><b>1</b> — <span data-i18n="least">найменш задоволена</span></span><span class="sep">·</span><span><b>7</b> — <span data-i18n="most">найбільш задоволена</span></span></p>
+    <p class="legend"><span class="cap" data-i18n="legendCap">Задоволеність роллю:</span><span><b>1</b> — <span data-i18n="least">найменша задоволеність</span></span><span class="sep">·</span><span><b>7</b> — <span data-i18n="most">найбільша задоволеність</span></span></p>
     <div class="roles" id="roles"></div>
 
     <div class="panel">
@@ -253,6 +323,14 @@
       <button class="btn" type="button" id="dl-chart" data-i18n="dlChart">Завантажити діаграму (PNG)</button>
       <span class="spacer"></span>
       <button class="btn ghost" type="button" data-reset data-i18n="clear">Очистити все</button>
+    </div>
+    <div class="session">
+      <span class="cap" data-i18n="sessionCap">Файл сесії:</span>
+      <button class="btn small" type="button" data-export data-i18n="exportBtn">Зберегти (JSON)</button>
+      <button class="btn small" type="button" data-import="open" data-i18n="openBtn">Відкрити</button>
+      <button class="btn small" type="button" data-import="base" data-i18n="compareBtn">Порівняти з попередньою</button>
+      <button class="btn small" type="button" id="base-clear" data-i18n="baseClear" hidden>Прибрати порівняння</button>
+      <span class="msg" data-msg aria-live="polite"></span>
     </div>
     <p class="privacy" data-i18n="privacy1">Усе, що ви вписуєте, зберігається лише у вашому браузері на цьому пристрої й нікуди не надсилається.</p>
   </section>
@@ -281,6 +359,7 @@
       </div>
       <div class="focus-box">
         <label class="cap" for="focus" data-i18n="focusLabel">Роль, над якою я хочу попрацювати:</label>
+        <p class="focus-q" data-i18n="focusQ">Яка роль, якби вона трохи змінилася, найбільше вплинула б на ваш тиждень?</p>
         <input type="text" id="focus" maxlength="90" autocomplete="off">
         <div class="pick" id="pick"></div>
       </div>
@@ -288,18 +367,99 @@
 
     <div class="foot">
       <span data-i18n="footBased">За матеріалами Ikigai Tribe</span>
-      <a href="https://ikigaitribe.com" target="_blank" rel="noopener">ikigaitribe.com</a>
     </div>
 
     <div class="actions">
-      <button class="btn primary" type="button" id="dl-map" data-i18n="dlMap">Завантажити мапу (PNG)</button>
-      <button class="btn" type="button" id="print" data-i18n="print">Друк / PDF</button>
-      <label class="check"><input type="checkbox" id="clean"><span data-i18n="cleanLabel">Показати лише обрані ролі</span></label>
+      <a class="btn primary" href="#diya" data-go="diya" data-i18n="next2">Далі: від мапи до дії →</a>
+      <button class="btn" type="button" id="dl-map" data-i18n="dlMap">Завантажити мапу (PNG)</button>
+      <button class="btn" type="button" data-print data-i18n="print">Друк / PDF</button>
       <span class="spacer"></span>
       <a class="btn ghost" href="#roli" data-go="roli" data-i18n="back">← До ролей</a>
     </div>
+    <div class="actions" style="margin-top:12px">
+      <label class="check"><input type="checkbox" id="clean"><span data-i18n="cleanLabel">Показати лише обрані ролі</span></label>
+      <label class="check"><input type="checkbox" id="facil"><span data-i18n="facilLabel">Питання фасилітатора</span></label>
+    </div>
     <p class="privacy" data-i18n="privacy2">Натисніть на роль, щоб додати її в зону; натисніть ще раз, щоб прибрати. Число поруч із роллю — ваша оцінка задоволеності цією роллю.</p>
   </section>
+
+  <!-- ======================= STEP 3 ======================= -->
+  <section id="step-diya" hidden>
+    <div class="head">
+      <h1 data-i18n-html="h1c">Від мапи <em>до дії</em></h1>
+      <div class="head-row">
+        <p class="lead" data-i18n="lead3">Оберіть одну роль і перетворіть те, що показала мапа, на один конкретний крок.</p>
+        <label class="date-field"><span class="cap" data-i18n="dateCap">Дата:</span><input type="date" data-date data-i18n-aria="dateAria" aria-label="Дата заповнення"></label>
+      </div>
+    </div>
+
+    <div class="no-roles" id="no-roles-3" hidden>
+      <span data-i18n="noRoles">Спершу впишіть хоча б одну роль на кроці 1.</span><br><br>
+      <a class="btn" href="#roli" data-go="roli" data-i18n="back">← До ролей</a>
+    </div>
+
+    <div class="plan" id="plan">
+      <div class="card accent">
+        <span class="cap" data-i18n="focusCap">Роль у фокусі</span>
+        <div id="focus3"></div>
+        <div class="pick" id="focus-pick"></div>
+      </div>
+
+      <div class="card">
+        <h2 data-i18n="needsTitle">Що потрібно цій ролі</h2>
+        <p class="note" id="needs-note"></p>
+        <div id="clusters"></div>
+      </div>
+
+      <div class="card">
+        <h2 data-i18n="meaningTitle">Сенс ролі</h2>
+        <p class="q" data-i18n="meaningQ">Хто виграє, коли я добре виконую цю роль?</p>
+        <textarea rows="1" data-plan="benefit"></textarea>
+      </div>
+
+      <div class="card">
+        <h2 data-i18n="resTitle">Ресурсні ролі</h2>
+        <p class="note" data-i18n="resNote">Ролі з задоволеністю 6–7 без позначеної напруги.</p>
+        <div id="res-list"></div>
+        <p class="q" style="margin-top:12px" data-i18n="resQ">Що тут працює — і що можна перенести в роль у фокусі?</p>
+        <textarea rows="1" data-plan="resource"></textarea>
+      </div>
+
+      <div class="card accent">
+        <h2 data-i18n="stepTitle">Мій крок</h2>
+        <span class="cap" data-i18n="actionCap">Одна дія протягом 7 днів</span>
+        <textarea rows="1" data-plan="action"></textarea>
+        <div class="two">
+          <div><span class="cap" data-i18n="whoCap">З ким / кого це стосується</span><input type="text" data-plan="who" maxlength="90" autocomplete="off"></div>
+          <div><span class="cap" data-i18n="byCap">До якої дати</span><input type="date" data-plan="by"></div>
+        </div>
+        <span class="cap" data-i18n="confCap">Впевненість, що це вдасться (1–10)</span>
+        <div class="scale ten" id="conf" role="radiogroup"></div>
+        <span class="cap" data-i18n="boostCap">Що підвищить впевненість на 1 бал?</span>
+        <input type="text" data-plan="boost" maxlength="140" autocomplete="off">
+        <span class="cap" data-i18n="recheckCap">Повторна мапа (через 4–6 тижнів)</span>
+        <input type="date" data-plan="recheck">
+      </div>
+
+      <div class="card">
+        <h2 data-i18n="takeTitle">Одне речення, яке я забираю з собою</h2>
+        <textarea rows="1" data-plan="takeaway"></textarea>
+      </div>
+    </div>
+
+    <div class="foot">
+      <span data-i18n="footBased">За матеріалами Ikigai Tribe</span>
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" type="button" data-print data-i18n="print">Друк / PDF</button>
+      <button class="btn" type="button" data-export data-i18n="exportBtn">Зберегти (JSON)</button>
+      <span class="spacer"></span>
+      <a class="btn ghost" href="#mapa" data-go="mapa" data-i18n="backMap">← До мапи</a>
+    </div>
+    <p class="privacy" data-i18n="privacy3">Файл сесії (JSON) зберігає всі ваші відповіді. Відкрийте його пізніше на кроці 1, щоб продовжити, або порівняйте з новою мапою.</p>
+  </section>
+  <input type="file" id="file-in" accept="application/json,.json" hidden>
 </div>
 
 <script>
@@ -316,40 +476,57 @@
 
   var ZONES = [
     { id: 1, single: false,
-      uk: { title: 'Рольове перевантаження', text: 'Ця роль вимагає більше, ніж я можу стабільно давати.' },
-      en: { title: 'Role overload', text: 'This role demands more than I can sustainably give.' } },
+      uk: { title: 'Рольове перевантаження', text: 'Ця роль вимагає більше, ніж я можу стабільно давати.', fac: 'Що з цього справді має робити саме ця роль — і що можна віддати, спростити чи відкласти?' },
+      en: { title: 'Role overload', text: 'This role demands more than I can sustainably give.', fac: 'Which of this truly belongs to this role, and what could be handed over, simplified or postponed?' } },
     { id: 2, single: true,
-      uk: { title: 'Рольове поглинання', text: 'Одна роль забирає весь мій час і увагу, залишаючи мало місця для інших ролей.' },
-      en: { title: 'Role engulfment', text: 'One role takes up all my time and attention, leaving little room for my other roles.' } },
+      uk: { title: 'Рольове поглинання', text: 'Одна роль забирає весь мій час і увагу, залишаючи мало місця для інших ролей.', fac: 'Яким ролям зараз бракує місця? Що змінилося б, якби вони отримали хоча б годину на тиждень?' },
+      en: { title: 'Role engulfment', text: 'One role takes up all my time and attention, leaving little room for my other roles.', fac: 'Which roles are being squeezed out? What would change if they got even one hour a week?' } },
     { id: 3, single: false,
-      uk: { title: 'Рольова плутанина', text: 'Я не впевнена, хто я і де мої межі в цій ролі.' },
-      en: { title: 'Role confusion', text: 'I am not sure who I am or where my boundaries are in this role.' } },
+      uk: { title: 'Рольова плутанина', text: 'Мені бракує ясності, хто я і де мої межі в цій ролі.', fac: 'Де закінчується ця роль і починаєтеся ви? Яку межу варто назвати вголос?' },
+      en: { title: 'Role confusion', text: 'I am not sure who I am or where my boundaries are in this role.', fac: 'Where does this role end and you begin? Which boundary needs to be said out loud?' } },
     { id: 4, single: false,
-      uk: { title: 'Рольова невизначеність', text: 'Я не знаю, чого від мене очікують і як виглядає успіх.' },
-      en: { title: 'Role ambiguity', text: 'I do not know what is expected of me or what success looks like.' } },
+      uk: { title: 'Рольова невизначеність', text: 'Я не знаю, чого від мене очікують і як виглядає успіх.', fac: 'Хто визначає успіх у цій ролі? Що ви припускаєте, але ще не перевірили?' },
+      en: { title: 'Role ambiguity', text: 'I do not know what is expected of me or what success looks like.', fac: 'Who defines success in this role? What are you assuming but have not checked?' } },
     { id: 5, single: true,
-      uk: { title: 'Рольовий полон', text: 'Я відчуваю себе в пастці ролі, яку більше не обираю вільно.' },
-      en: { title: 'Role captivity', text: 'I feel trapped in a role I no longer freely choose.' } },
+      uk: { title: 'Рольовий полон', text: 'Я відчуваю себе в пастці ролі, яку більше не обираю вільно.', fac: 'Що тримає вас у цій ролі? Що з цього — вибір, а що — звичка, обов\'язок чи страх?' },
+      en: { title: 'Role captivity', text: 'I feel trapped in a role I no longer freely choose.', fac: 'What keeps you in this role? Which part is choice, and which is habit, duty or fear?' } },
     { id: 6, single: false,
-      uk: { title: 'Рольовий конфлікт', text: 'Вимоги цієї ролі суперечать іншій моїй ролі.' },
-      en: { title: 'Role conflict', text: 'The demands of this role clash with another role of mine.' } },
+      uk: { title: 'Рольовий конфлікт', text: 'Вимоги цієї ролі суперечать іншій моїй ролі.', fac: 'Коли ці ролі зіштовхуються, яка зазвичай перемагає? А яка мала б?' },
+      en: { title: 'Role conflict', text: 'The demands of this role clash with another role of mine.', fac: 'When these roles collide, which one usually wins? Which one should?' } },
     { id: 7, single: false,
-      uk: { title: 'Рольова провина', text: 'Я відчуваю провину, що не приділяю цій ролі стільки часу, уваги чи присутності, скільки вона заслуговує.' },
-      en: { title: 'Role guilt', text: 'I feel guilty that I do not give this role the time, attention or presence it deserves.' } },
+      uk: { title: 'Рольова провина', text: 'Я відчуваю провину, що не приділяю цій ролі стільки часу, уваги чи присутності, скільки вона заслуговує.', fac: 'Чиї очікування стоять за цією провиною? Як виглядало б «достатньо добре»?' },
+      en: { title: 'Role guilt', text: 'I feel guilty that I do not give this role the time, attention or presence it deserves.', fac: 'Whose expectations sit behind this guilt? What would \'good enough\' look like?' } },
     { id: 8, single: false,
-      uk: { title: 'Рольове напруження', text: 'Виконання цієї ролі створює напругу або емоційний тиск.' },
-      en: { title: 'Role strain', text: 'Carrying out this role creates tension or emotional pressure.' } }
+      uk: { title: 'Рольове напруження', text: 'Виконання цієї ролі створює напругу або емоційний тиск.', fac: 'Що саме створює напругу — завдання, люди чи ваші власні внутрішні вимоги?' },
+      en: { title: 'Role strain', text: 'Carrying out this role creates tension or emotional pressure.', fac: 'What exactly creates the tension: the tasks, the people, or your own inner demands?' } }
   ];
+
+  /* The 8 zones grouped by the kind of help they call for (used on step 3). */
+  var CLUSTERS = [
+    { key: 'clarity', zones: [3, 4],
+      uk: { title: 'Ясність', q: 'З ким і коли ви уточните очікування, критерії успіху та межі цієї ролі?' },
+      en: { title: 'Clarity', q: 'With whom, and when, will you clarify the expectations, success criteria and boundaries of this role?' } },
+    { key: 'capacity', zones: [1, 2, 6],
+      uk: { title: 'Ресурс і пріоритети', q: 'Що ви зупините, делегуєте або обмежите? Яка роль має пріоритет, коли ролі конкурують?' },
+      en: { title: 'Capacity and priorities', q: 'What will you stop, delegate or limit? Which role comes first when roles compete?' } },
+    { key: 'choice', zones: [5],
+      uk: { title: 'Вибір', q: 'Чи обрали б ви цю роль сьогодні? Якщо так — навіщо вона вам? Якщо ні — що можна переглянути або змінити?' },
+      en: { title: 'Choice', q: 'Would you choose this role today? If yes, what is it for? If not, what could be renegotiated or changed?' } },
+    { key: 'emotional', zones: [7, 8],
+      uk: { title: 'Емоційне навантаження', q: 'Який малий регулярний ритуал присутності буде «достатньо добрим» для цієї ролі?' },
+      en: { title: 'Emotional load', q: 'What small, regular ritual of presence would be "good enough" for this role?' } }
+  ];
+  var PLAN_KEYS = ['benefit', 'resource', 'action', 'who', 'by', 'boost', 'recheck', 'takeaway'];
 
   var I18N = {
     uk: {
       docTitle: 'Мапа рольового дистресу', stepsAria: 'Кроки',
-      nav1: 'Задоволеність ролями', nav2: 'Мапа дистресу',
-      h1a: 'Задоволеність <em>ролями</em>', h1b: 'Мапа <em>рольового дистресу</em>',
+      nav1: 'Задоволеність ролями', nav2: 'Мапа дистресу', nav3: 'Від мапи до дії',
+      h1a: 'Задоволеність <em>ролями</em>', h1b: 'Мапа <em>рольового дистресу</em>', h1c: 'Від мапи <em>до дії</em>',
       lead1: 'Впишіть свої ролі (до десяти) та оцініть кожну за шкалою від 1 до 7: наскільки ви задоволені цією роллю.',
       lead2: 'Позначте в кожному квадраті ролі, у яких ви відчуваєте цей вид напруги.',
       dateCap: 'Дата:', dateAria: 'Дата заповнення',
-      legendCap: 'Задоволеність роллю:', least: 'найменш задоволена', most: 'найбільш задоволена',
+      legendCap: 'Задоволеність роллю:', least: 'найменша задоволеність', most: 'найбільша задоволеність',
       chartTitle: 'Діаграма задоволеності ролями',
       chartNote: 'Оновлюється під час заповнення. Порожні рядки не враховуються.',
       chartEmpty: "Впишіть роль та оберіть оцінку — діаграма з'явиться тут.",
@@ -358,27 +535,52 @@
       privacy2: 'Натисніть на роль, щоб додати її в зону; натисніть ще раз, щоб прибрати. Число поруч із роллю — ваша оцінка задоволеності цією роллю.',
       noRoles: 'Спершу впишіть хоча б одну роль на кроці 1.', back: '← До ролей',
       summaryTitle: 'Висновок', focusLabel: 'Роль, над якою я хочу попрацювати:',
+      focusQ: 'Яка роль, якби вона трохи змінилася, найбільше вплинула б на ваш тиждень?',
       footBased: 'За матеріалами Ikigai Tribe',
       dlMap: 'Завантажити мапу (PNG)', print: 'Друк / PDF', cleanLabel: 'Показати лише обрані ролі',
-      ph1: 'Наприклад: мама, керівниця, донька…', ph: 'Роль', roleAria: 'Роль',
+      ph1: 'Наприклад: мама чи тато, керівник(-ця), друг…', ph: 'Роль', roleAria: 'Роль',
       scaleAria: 'Задоволеність роллю {n}, від 1 до 7', outOf7: 'з 7',
       avg: 'Середня задоволеність: ', rated: 'оцінено ролей: ', unrated: 'без оцінки: ',
-      capOne: 'Роль:', capMany: 'Роль/ролі:',
+      capOne: 'Одна роль:', capMany: 'Роль/ролі:',
       sumEmpty: "Позначте ролі в зонах — висновок з'явиться тут.", sumEmptyPng: 'Ролі в зонах не позначено.',
       sumMost: 'Найбільше видів напруги: ', sumMostEnd: ' — {n} з 8 зон.',
       sumLow: 'Найнижча задоволеність: ', sumLowEnd: ' — {n} з 7.',
       sumFree: 'Без позначеної напруги: ', sat: 'задоволеність', byRole: 'Напруга за ролями:',
       pickHint: 'Обрати зі своїх ролей:', confirmClear: 'Стерти всі ролі, оцінки та мапу?',
       pngSub: 'Ролі, у яких я відчуваю цей вид напруги.',
-      pngScale: 'Шкала: 1 — найменш задоволена, 7 — найбільш задоволена.',
+      pngScale: 'Шкала: 1 — найменша задоволеність, 7 — найбільша задоволеність.',
       fileMap: 'mapa-rolovoho-dystresu', fileChart: 'zadovolenist-roliamy', decimal: ',',
       titleMap: [{ t: 'МАПА' }, { t: 'РОЛЬОВОГО ДИСТРЕСУ', red: true }],
-      titleChart: [{ t: 'ЗАДОВОЛЕНІСТЬ' }, { t: 'РОЛЯМИ', red: true }]
+      titleChart: [{ t: 'ЗАДОВОЛЕНІСТЬ' }, { t: 'РОЛЯМИ', red: true }],
+      sumHot: 'Гарячі точки (2+ зони й задоволеність ≤ 3): ',
+      next2: 'Далі: від мапи до дії →', facilLabel: 'Питання фасилітатора', backMap: '← До мапи',
+      lead3: 'Оберіть одну роль і перетворіть те, що показала мапа, на один конкретний крок.',
+      focusCap: 'Роль у фокусі', focusNone: 'Оберіть роль, над якою хочете попрацювати:',
+      focusTip: 'Підказка з мапи: ', focusZones: 'Види напруги: ', focusNoZones: 'Для цієї ролі напругу не позначено.',
+      focusCustom: 'Цієї ролі немає у списку кроку 1, тому питання нижче — для всіх позначених ролей.',
+      change: 'Змінити', needsTitle: 'Що потрібно цій ролі',
+      needsFocus: 'Питання залежать від видів напруги, які ви позначили для ролі у фокусі.',
+      needsAll: 'Роль у фокусі не обрано, тому показано всі групи напруги з мапи.',
+      needsEmpty: 'На мапі для цієї ролі немає позначеної напруги. Подумайте, що робить її стійкою, — або оберіть іншу роль.',
+      inMap: 'на мапі: ', meaningTitle: 'Сенс ролі', meaningQ: 'Хто виграє, коли я добре виконую цю роль?',
+      resTitle: 'Ресурсні ролі', resNote: 'Ролі з задоволеністю 6–7 без позначеної напруги.',
+      resNone: 'Таких ролей поки немає. Згадайте будь-яку сферу життя, де вам легко.',
+      resQ: 'Що тут працює — і що можна перенести в роль у фокусі?',
+      stepTitle: 'Мій крок', actionCap: 'Одна дія протягом 7 днів', whoCap: 'З ким / кого це стосується',
+      byCap: 'До якої дати', confCap: 'Впевненість, що це вдасться (1–10)', confAria: 'Впевненість від 1 до 10',
+      boostCap: 'Що підвищить впевненість на 1 бал?', recheckCap: 'Повторна мапа (через 4–6 тижнів)',
+      takeTitle: 'Одне речення, яке я забираю з собою',
+      privacy3: 'Файл сесії (JSON) зберігає всі ваші відповіді. Відкрийте його пізніше на кроці 1, щоб продовжити, або порівняйте з новою мапою.',
+      sessionCap: 'Файл сесії:', exportBtn: 'Зберегти (JSON)', openBtn: 'Відкрити', compareBtn: 'Порівняти з попередньою',
+      baseClear: 'Прибрати порівняння', fileSession: 'rolova-mapa-sesiia',
+      msgOpened: 'Сесію відкрито.', msgBase: 'Порівняння додано.', msgBad: 'Не вдалося прочитати файл сесії.',
+      confirmOpen: 'Замінити поточні відповіді відповідями з файлу?',
+      baseNote: 'попередня сесія', baseFrom: 'Порівняння з ', baseMatched: 'збіглося ролей: '
     },
     en: {
       docTitle: 'Role Distress Map', stepsAria: 'Steps',
-      nav1: 'Role satisfaction', nav2: 'Distress map',
-      h1a: 'Role <em>satisfaction</em>', h1b: '<em>Role distress</em> map',
+      nav1: 'Role satisfaction', nav2: 'Distress map', nav3: 'From map to action',
+      h1a: 'Role <em>satisfaction</em>', h1b: '<em>Role distress</em> map', h1c: 'From map <em>to action</em>',
       lead1: 'Write down your roles (up to ten) and rate each one on a scale from 1 to 7: how satisfied you are with this role.',
       lead2: 'In each box, mark the roles in which you feel this type of distress.',
       dateCap: 'Date:', dateAria: 'Date completed',
@@ -391,12 +593,13 @@
       privacy2: 'Tap a role to add it to a zone; tap again to remove it. The number next to a role is your satisfaction rating for it.',
       noRoles: 'First enter at least one role in step 1.', back: '← Back to roles',
       summaryTitle: 'Summary', focusLabel: 'The role I want to work on:',
+      focusQ: 'Which role, if it changed a little, would make the biggest difference to your week?',
       footBased: 'Based on Ikigai Tribe materials',
       dlMap: 'Download map (PNG)', print: 'Print / PDF', cleanLabel: 'Show selected roles only',
-      ph1: 'For example: mother, manager, daughter…', ph: 'Role', roleAria: 'Role',
+      ph1: 'For example: parent, manager, friend…', ph: 'Role', roleAria: 'Role',
       scaleAria: 'Satisfaction with role {n}, from 1 to 7', outOf7: 'out of 7',
       avg: 'Average satisfaction: ', rated: 'roles rated: ', unrated: 'not rated: ',
-      capOne: 'Role:', capMany: 'Role(s):',
+      capOne: 'One role:', capMany: 'Role(s):',
       sumEmpty: 'Mark roles in the zones — the summary will appear here.', sumEmptyPng: 'No roles marked in the zones.',
       sumMost: 'Most types of distress: ', sumMostEnd: ' — {n} of 8 zones.',
       sumLow: 'Lowest satisfaction: ', sumLowEnd: ' — {n} out of 7.',
@@ -406,7 +609,31 @@
       pngScale: 'Scale: 1 — least satisfied, 7 — most satisfied.',
       fileMap: 'role-distress-map', fileChart: 'role-satisfaction', decimal: '.',
       titleMap: [{ t: 'ROLE DISTRESS', red: true }, { t: 'MAP' }],
-      titleChart: [{ t: 'ROLE' }, { t: 'SATISFACTION', red: true }]
+      titleChart: [{ t: 'ROLE' }, { t: 'SATISFACTION', red: true }],
+      sumHot: 'Hotspots (2+ zones and satisfaction ≤ 3): ',
+      next2: 'Next: from map to action →', facilLabel: 'Facilitator questions', backMap: '← Back to map',
+      lead3: 'Choose one role and turn what the map showed into one concrete step.',
+      focusCap: 'Role in focus', focusNone: 'Choose the role you want to work on:',
+      focusTip: 'Hint from the map: ', focusZones: 'Types of distress: ', focusNoZones: 'No distress marked for this role.',
+      focusCustom: 'This role is not in the step 1 list, so the questions below cover all marked roles.',
+      change: 'Change', needsTitle: 'What this role needs',
+      needsFocus: 'The questions follow the types of distress you marked for the role in focus.',
+      needsAll: 'No role in focus yet, so all distress groups from the map are shown.',
+      needsEmpty: 'No distress is marked for this role on the map. Consider what keeps it steady, or choose another role.',
+      inMap: 'on the map: ', meaningTitle: 'Meaning of the role', meaningQ: 'Who benefits when I do this role well?',
+      resTitle: 'Resource roles', resNote: 'Roles rated 6–7 with no distress marked.',
+      resNone: 'No such roles yet. Think of any area of life where things feel easy.',
+      resQ: 'What works here, and what could you carry over to the role in focus?',
+      stepTitle: 'My step', actionCap: 'One action within 7 days', whoCap: 'With whom / who it involves',
+      byCap: 'By when', confCap: 'Confidence it will happen (1–10)', confAria: 'Confidence from 1 to 10',
+      boostCap: 'What would raise your confidence by one point?', recheckCap: 'Repeat the map (in 4–6 weeks)',
+      takeTitle: 'One sentence I take away',
+      privacy3: 'The session file (JSON) keeps all your answers. Open it later on step 1 to continue, or compare it with a new map.',
+      sessionCap: 'Session file:', exportBtn: 'Save (JSON)', openBtn: 'Open', compareBtn: 'Compare with previous',
+      baseClear: 'Remove comparison', fileSession: 'role-map-session',
+      msgOpened: 'Session opened.', msgBase: 'Comparison added.', msgBad: 'Could not read the session file.',
+      confirmOpen: 'Replace your current answers with the ones from the file?',
+      baseNote: 'previous session', baseFrom: 'Compared with ', baseMatched: 'roles matched: '
     }
   };
 
@@ -439,33 +666,61 @@
   }
 
   /* ---------------- state ---------------- */
+  function blankPlan() {
+    var p = { clusters: {}, conf: null };
+    PLAN_KEYS.forEach(function (k) { p[k] = ''; });
+    CLUSTERS.forEach(function (c) { p.clusters[c.key] = ''; });
+    return p;
+  }
   function blankState() {
     /* date = today unless the person changed it (dateManual) */
-    var s = { date: todayISO(), dateManual: false, focus: '', roles: [], zones: {}, clean: false };
+    var s = { date: todayISO(), dateManual: false, focus: '', roles: [], zones: {}, clean: false,
+              facil: false, plan: blankPlan(), baseline: null };
     for (var i = 0; i < MAX; i++) s.roles.push({ name: '', score: null });
     ZONES.forEach(function (z) { s.zones[z.id] = []; });
     return s;
   }
-  function load() {
+  function str(v, max) { return typeof v === 'string' ? v.slice(0, max || 2000) : ''; }
+  /* Turns stored or imported data into a clean state; unknown fields are dropped. */
+  function normalize(raw, keepDate) {
     var s = blankState();
-    try {
-      var raw = JSON.parse(localStorage.getItem(KEY) || 'null');
-      if (raw && Array.isArray(raw.roles)) {
-        if (raw.dateManual && validISO(raw.date)) { s.date = raw.date; s.dateManual = true; }
-        s.clean = !!raw.clean;
-        s.focus = typeof raw.focus === 'string' ? raw.focus : '';
-        for (var i = 0; i < MAX; i++) {
-          var r = raw.roles[i] || {};
-          s.roles[i].name = typeof r.name === 'string' ? r.name : '';
-          s.roles[i].score = (r.score >= 1 && r.score <= 7) ? Math.round(r.score) : null;
-        }
-        ZONES.forEach(function (z) {
-          var arr = raw.zones && raw.zones[z.id];
-          if (Array.isArray(arr)) s.zones[z.id] = arr.filter(function (n) { return n >= 0 && n < MAX; });
-        });
-      }
-    } catch (e) { /* storage unavailable: page works without it */ }
+    if (!raw || !Array.isArray(raw.roles)) return null;
+    if ((raw.dateManual || keepDate) && validISO(raw.date)) { s.date = raw.date; s.dateManual = true; }
+    s.clean = !!raw.clean;
+    s.facil = !!raw.facil;
+    s.focus = str(raw.focus, 90);
+    for (var i = 0; i < MAX; i++) {
+      var r = raw.roles[i] || {};
+      s.roles[i].name = str(r.name, 40);
+      s.roles[i].score = (r.score >= 1 && r.score <= 7) ? Math.round(r.score) : null;
+    }
+    ZONES.forEach(function (z) {
+      var arr = raw.zones && raw.zones[z.id];
+      if (Array.isArray(arr)) s.zones[z.id] = arr.filter(function (n) { return n >= 0 && n < MAX; }).map(Number);
+    });
+    var rp = raw.plan || {};
+    PLAN_KEYS.forEach(function (k) { s.plan[k] = str(rp[k]); });
+    ['by', 'recheck'].forEach(function (k) { if (!validISO(s.plan[k])) s.plan[k] = ''; });
+    s.plan.conf = (rp.conf >= 1 && rp.conf <= 10) ? Math.round(rp.conf) : null;
+    CLUSTERS.forEach(function (c) { s.plan.clusters[c.key] = str(rp.clusters && rp.clusters[c.key]); });
+    var b = raw.baseline;
+    if (b && Array.isArray(b.roles)) {
+      s.baseline = {
+        date: validISO(b.date) ? b.date : '',
+        roles: b.roles.slice(0, MAX).map(function (r) {
+          return { name: str(r && r.name, 40), score: (r && r.score >= 1 && r.score <= 7) ? Math.round(r.score) : null,
+                   zones: (r && r.zones >= 0 && r.zones <= 8) ? Math.round(r.zones) : 0 };
+        }).filter(function (r) { return r.name.trim(); })
+      };
+    }
     return s;
+  }
+  function load() {
+    try {
+      var s = normalize(JSON.parse(localStorage.getItem(KEY) || 'null'), false);
+      if (s) return s;
+    } catch (e) { /* storage unavailable: page works without it */ }
+    return blankState();
   }
   function save() {
     try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
@@ -483,6 +738,34 @@
   }
   function zoneRoles(zid) {
     return state.zones[zid].filter(function (i) { return roleName(i); });
+  }
+  function snapshot(st) {
+    var out = [];
+    for (var i = 0; i < MAX; i++) {
+      var nm = st.roles[i].name.trim();
+      if (!nm) continue;
+      var nz = ZONES.filter(function (z) { return st.zones[z.id].indexOf(i) !== -1; }).length;
+      out.push({ name: nm, score: st.roles[i].score, zones: nz });
+    }
+    return { date: st.date, roles: out };
+  }
+  function baseFor(name) {
+    if (!state.baseline) return null;
+    var key = name.trim().toLowerCase();
+    for (var k = 0; k < state.baseline.roles.length; k++) {
+      if (state.baseline.roles[k].name.trim().toLowerCase() === key) return state.baseline.roles[k];
+    }
+    return null;
+  }
+  function zonesOf(i) {
+    return ZONES.filter(function (z) { return zoneRoles(z.id).indexOf(i) !== -1; });
+  }
+  function focusIndex() {
+    var f = state.focus.trim().toLowerCase();
+    if (!f) return -1;
+    var ids = namedRoles();
+    for (var k = 0; k < ids.length; k++) if (roleName(ids[k]).toLowerCase() === f) return ids[k];
+    return -1;
   }
   function el(tag, cls, text) {
     var e = document.createElement(tag);
@@ -546,17 +829,31 @@
       chartEl.appendChild(el('p', 'chart-empty', t('chartEmpty')));
       return;
     }
+    var matched = 0;
+    chartEl.classList.toggle('has-base', !!state.baseline);
     ids.forEach(function (i) {
-      var r = state.roles[i];
+      var r = state.roles[i], b = baseFor(roleName(i));
       var row = el('div', 'c-row');
-      row.title = roleName(i) + ': ' + r.score + ' ' + t('outOf7');
+      row.title = roleName(i) + ': ' + r.score + ' ' + t('outOf7') +
+        (b && b.score ? ' (' + t('baseNote') + ': ' + b.score + ')' : '');
       row.appendChild(el('div', 'c-label', roleName(i)));
       var track = el('div', 'c-track');
+      if (b && b.score) {
+        var g = el('div', 'c-ghost');
+        g.style.width = (b.score / 7 * 100) + '%';
+        track.appendChild(g);
+      }
       var bar = el('div', 'c-bar');
       bar.style.width = (r.score / 7 * 100) + '%';
       track.appendChild(bar);
       row.appendChild(track);
-      row.appendChild(el('div', 'c-val', String(r.score)));
+      var val = el('div', 'c-val', String(r.score));
+      if (b && b.score) {
+        matched++;
+        var d = r.score - b.score;
+        val.appendChild(el('small', d > 0 ? 'up' : d < 0 ? 'down' : '', d > 0 ? '+' + d : d < 0 ? '−' + (-d) : '='));
+      }
+      row.appendChild(val);
       chartEl.appendChild(row);
     });
     var axis = el('div', 'c-axis');
@@ -576,6 +873,13 @@
     var unrated = namedRoles().length - ids.length;
     if (unrated > 0) sum.appendChild(document.createTextNode(' · ' + t('unrated') + unrated));
     chartEl.appendChild(sum);
+    if (state.baseline) {
+      var bn = el('p', 'base-note');
+      var k = el('span'); k.appendChild(el('i', 'key')); k.appendChild(document.createTextNode(t('baseNote')));
+      bn.appendChild(k);
+      bn.appendChild(el('span', null, t('baseFrom') + (fmtDate(state.baseline.date) || '—') + ' · ' + t('baseMatched') + matched));
+      chartEl.appendChild(bn);
+    }
   }
 
   /* ---------------- step 2: map ---------------- */
@@ -584,7 +888,9 @@
     var ids = namedRoles();
     mapEl.textContent = '';
     mapEl.classList.toggle('clean', state.clean);
+    mapEl.classList.toggle('facil', state.facil);
     document.getElementById('clean').checked = state.clean;
+    document.getElementById('facil').checked = state.facil;
     document.getElementById('no-roles').hidden = ids.length > 0;
 
     ZONES.forEach(function (z) {
@@ -595,6 +901,7 @@
       h.appendChild(document.createTextNode(zt(z).title));
       box.appendChild(h);
       box.appendChild(el('p', null, zt(z).text));
+      box.appendChild(el('p', 'fac', zt(z).fac));
       box.appendChild(el('span', 'cap', z.single ? t('capOne') : t('capMany')));
 
       var chips = el('div', 'chips');
@@ -652,6 +959,8 @@
           lines.push([{ t: t('sumLow') }, { t: joinNames(lows), b: true }, { t: t('sumLowEnd', min) }]);
         }
       }
+      var hot = marked.filter(function (p) { return p.zones.length >= 2 && p.score && p.score <= 3; });
+      if (hot.length) lines.push([{ t: t('sumHot') }, { t: joinNames(hot), b: true }, { t: '.' }]);
       if (free.length) lines.push([{ t: t('sumFree') }, { t: joinNames(free), b: true }, { t: '.' }]);
     }
     return {
@@ -703,6 +1012,214 @@
     renderPick();
   }
 
+  /* ---------------- step 3: from map to action ---------------- */
+  function grow(ta) {
+    if (ta.tagName !== 'TEXTAREA') return;
+    ta.style.height = 'auto';
+    ta.style.height = Math.max(34, ta.scrollHeight + 2) + 'px';
+  }
+  function bindText(node, get, set) {
+    node.value = get();
+    node.addEventListener('input', function () { set(node.value); save(); grow(node); });
+    setTimeout(function () { grow(node); }, 0);
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-plan]'), function (n) {
+    var k = n.getAttribute('data-plan');
+    n.addEventListener('input', function () { state.plan[k] = n.value; save(); grow(n); });
+  });
+  function syncPlanFields() {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-plan]'), function (n) {
+      n.value = state.plan[n.getAttribute('data-plan')] || '';
+      grow(n);
+    });
+  }
+  function addDays(iso, n) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
+    var d = m ? new Date(+m[1], +m[2] - 1, +m[3]) : new Date();
+    d.setDate(d.getDate() + n);
+    return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+  }
+  /* roles sorted the way the map suggests working on them: most zones, then lowest score */
+  function rankedRoles() {
+    return namedRoles().slice().sort(function (a, b) {
+      return zonesOf(b).length - zonesOf(a).length || (state.roles[a].score || 8) - (state.roles[b].score || 8);
+    });
+  }
+  function setFocus(name) {
+    state.focus = name; focusEl.value = name; save();
+    renderPick(); renderPlan();
+  }
+
+  function renderFocus() {
+    var box = document.getElementById('focus3'), pick = document.getElementById('focus-pick');
+    box.textContent = ''; pick.textContent = '';
+    var fi = focusIndex(), ids = rankedRoles();
+    if (state.focus.trim()) {
+      box.appendChild(el('p', 'focus-name', state.focus.trim()));
+      if (fi >= 0) {
+        var meta = el('p', 'focus-meta');
+        if (state.roles[fi].score) {
+          meta.appendChild(document.createTextNode(t('sat').charAt(0).toUpperCase() + t('sat').slice(1) + ': '));
+          meta.appendChild(el('b', null, state.roles[fi].score + ' ' + t('outOf7')));
+          var b = baseFor(roleName(fi));
+          if (b && b.score) meta.appendChild(document.createTextNode(' (' + t('baseNote') + ': ' + b.score + ')'));
+        }
+        box.appendChild(meta);
+        var zs = zonesOf(fi), tags = el('div', 'tags');
+        if (zs.length) zs.forEach(function (z) { tags.appendChild(el('span', 'tag', zt(z).title)); });
+        else tags.appendChild(el('span', 'tag plain', t('focusNoZones')));
+        box.appendChild(tags);
+      } else {
+        box.appendChild(el('p', 'note', t('focusCustom')));
+      }
+      var ch = el('button', 'btn small', t('change'));
+      ch.type = 'button'; ch.style.marginTop = '14px';
+      ch.addEventListener('click', function () { setFocus(''); });
+      pick.appendChild(ch);
+      return;
+    }
+    box.appendChild(el('p', 'q', t('focusQ')));
+    box.appendChild(el('p', 'note', t('focusNone')));
+    if (ids.length && zonesOf(ids[0]).length) {
+      var tip = el('p', 'note');
+      tip.appendChild(document.createTextNode(t('focusTip') + t('sumMost')));
+      tip.appendChild(el('b', null, roleName(ids[0])));
+      tip.appendChild(document.createTextNode('.'));
+      box.appendChild(tip);
+    }
+    ids.forEach(function (i) {
+      var c = el('button', 'chip', roleName(i));
+      c.type = 'button'; c.setAttribute('aria-pressed', 'false');
+      var nz = zonesOf(i).length;
+      if (nz) c.appendChild(el('small', null, nz + '/8'));
+      c.addEventListener('click', function () { setFocus(roleName(i)); });
+      pick.appendChild(c);
+    });
+  }
+
+  function renderClusters() {
+    var wrapEl = document.getElementById('clusters'), note = document.getElementById('needs-note');
+    wrapEl.textContent = '';
+    var fi = focusIndex(), focusMode = fi >= 0;
+    var activeZones = focusMode ? zonesOf(fi).map(function (z) { return z.id; })
+                                : ZONES.filter(function (z) { return zoneRoles(z.id).length; }).map(function (z) { return z.id; });
+    note.textContent = focusMode ? t('needsFocus') : t('needsAll');
+    var shown = 0;
+    CLUSTERS.forEach(function (c) {
+      var zs = c.zones.filter(function (id) { return activeZones.indexOf(id) !== -1; });
+      if (!zs.length) return;
+      shown++;
+      var box = el('div', 'cluster');
+      var h = el('h3');
+      h.appendChild(document.createTextNode(c[lang].title));
+      h.appendChild(el('span', 'zn', zs.map(function (id) { return zt(ZONES[id - 1]).title; }).join(' · ')));
+      box.appendChild(h);
+      if (!focusMode) {
+        var who = [];
+        zs.forEach(function (id) { zoneRoles(id).forEach(function (i) { if (who.indexOf(i) === -1) who.push(i); }); });
+        box.appendChild(el('p', 'who', t('inMap') + who.map(roleName).join(', ')));
+      }
+      box.appendChild(el('p', 'q', c[lang].q));
+      var ta = document.createElement('textarea');
+      ta.rows = 1;
+      bindText(ta, function () { return state.plan.clusters[c.key]; }, function (v) { state.plan.clusters[c.key] = v; });
+      box.appendChild(ta);
+      wrapEl.appendChild(box);
+    });
+    if (!shown) wrapEl.appendChild(el('p', 'empty-note', t('needsEmpty')));
+  }
+
+  function renderResources() {
+    var box = document.getElementById('res-list'), fi = focusIndex();
+    box.textContent = '';
+    var res = namedRoles().filter(function (i) {
+      return i !== fi && state.roles[i].score >= 6 && !zonesOf(i).length;
+    });
+    if (!res.length) { box.appendChild(el('p', 'empty-note', t('resNone'))); return; }
+    var tags = el('div', 'tags');
+    res.forEach(function (i) { tags.appendChild(el('span', 'tag', roleName(i) + ' · ' + state.roles[i].score)); });
+    box.appendChild(tags);
+  }
+
+  function renderConf() {
+    var sc = document.getElementById('conf');
+    sc.textContent = '';
+    sc.setAttribute('aria-label', t('confAria'));
+    for (var v = 1; v <= 10; v++) (function (v) {
+      var b = el('button', null, String(v));
+      b.type = 'button'; b.setAttribute('role', 'radio');
+      b.setAttribute('aria-checked', state.plan.conf === v ? 'true' : 'false');
+      b.addEventListener('click', function () {
+        state.plan.conf = state.plan.conf === v ? null : v;
+        save(); renderConf();
+      });
+      sc.appendChild(b);
+    })(v);
+  }
+
+  function renderPlan() {
+    var has = namedRoles().length > 0;
+    document.getElementById('no-roles-3').hidden = has;
+    document.getElementById('plan').hidden = !has;
+    if (!has) return;
+    if (!state.plan.recheck) { state.plan.recheck = addDays(state.date, 42); save(); }
+    renderFocus(); renderClusters(); renderResources(); renderConf(); syncPlanFields();
+  }
+
+  /* ---------------- session file (JSON) ---------------- */
+  function flash(text) {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-msg]'), function (m) {
+      m.textContent = text;
+      clearTimeout(m._tm); m._tm = setTimeout(function () { m.textContent = ''; }, 4000);
+    });
+  }
+  function exportSession() {
+    var data = { app: 'role-map', version: 2, exported: new Date().toISOString(), lang: lang, state: state };
+    var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    var name = t('fileSession') + '-' + (validISO(state.date) ? state.date : todayISO()) + '.json';
+    downloadBlob(blob, name);
+  }
+  var importMode = 'open', fileIn = document.getElementById('file-in');
+  Array.prototype.forEach.call(document.querySelectorAll('[data-export]'), function (b) {
+    b.addEventListener('click', exportSession);
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-import]'), function (b) {
+    b.addEventListener('click', function () {
+      importMode = b.getAttribute('data-import');
+      fileIn.value = ''; fileIn.click();
+    });
+  });
+  fileIn.addEventListener('change', function () {
+    var f = fileIn.files && fileIn.files[0];
+    if (!f) return;
+    var rd = new FileReader();
+    rd.onload = function () {
+      var raw = null;
+      try { raw = JSON.parse(rd.result); } catch (e) {}
+      var src = raw && raw.state ? raw.state : raw;
+      var st = normalize(src, true);
+      if (!st) { flash(t('msgBad')); return; }
+      if (importMode === 'base') {
+        state.baseline = snapshot(st);
+        save(); refreshAll(); flash(t('msgBase'));
+      } else {
+        if (namedRoles().length && !confirm(t('confirmOpen'))) return;
+        if (!st.baseline && state.baseline) st.baseline = state.baseline;
+        state = st; save();
+        focusEl.value = state.focus; syncDates(null);
+        refreshAll(); flash(t('msgOpened'));
+      }
+    };
+    rd.readAsText(f);
+  });
+  document.getElementById('base-clear').addEventListener('click', function () {
+    state.baseline = null; save(); refreshAll();
+  });
+  function refreshAll() {
+    document.getElementById('base-clear').hidden = !state.baseline;
+    buildRoles(); renderChart(); renderMap(); renderPlan();
+  }
+
   /* ---------------- shared bits ---------------- */
   var dateInputs = document.querySelectorAll('[data-date]');
   function syncDates(except) {
@@ -732,7 +1249,7 @@
     Array.prototype.forEach.call(document.querySelectorAll('[data-lang]'), function (b) {
       b.setAttribute('aria-pressed', b.getAttribute('data-lang') === lang ? 'true' : 'false');
     });
-    buildRoles(); renderChart(); renderMap();
+    refreshAll();
   }
   Array.prototype.forEach.call(document.querySelectorAll('[data-lang]'), function (b) {
     b.addEventListener('click', function () {
@@ -749,32 +1266,41 @@
   document.getElementById('clean').addEventListener('change', function (e) {
     state.clean = e.target.checked; save(); renderMap();
   });
-  document.getElementById('print').addEventListener('click', function () { window.print(); });
+  document.getElementById('facil').addEventListener('change', function (e) {
+    state.facil = e.target.checked; save(); renderMap();
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-print]'), function (b) {
+    b.addEventListener('click', function () {
+      Array.prototype.forEach.call(document.querySelectorAll('textarea'), grow);
+      window.print();
+    });
+  });
   document.querySelector('[data-reset]').addEventListener('click', function () {
     if (!confirm(t('confirmClear'))) return;
     state = blankState(); save();
     syncDates(null);
     focusEl.value = '';
-    buildRoles(); renderChart(); renderMap();
+    refreshAll();
   });
 
   var current = null;
   function show(step) {
-    step = step === 'mapa' ? 'mapa' : 'roli';
+    step = (step === 'mapa' || step === 'diya') ? step : 'roli';
     current = step;
     document.getElementById('step-roli').hidden = step !== 'roli';
     document.getElementById('step-mapa').hidden = step !== 'mapa';
+    document.getElementById('step-diya').hidden = step !== 'diya';
     Array.prototype.forEach.call(document.querySelectorAll('.steps a'), function (a) {
       if (a.dataset.step === step) a.setAttribute('aria-current', 'page');
       else a.removeAttribute('aria-current');
     });
-    if (step === 'mapa') renderMap(); else renderChart();
+    if (step === 'mapa') renderMap(); else if (step === 'diya') renderPlan(); else renderChart();
     try { window.scrollTo(0, 0); } catch (e) {}
   }
   function hashStep() {
     var h = '';
     try { h = location.hash; } catch (e) {}
-    return h === '#mapa' ? 'mapa' : 'roli';
+    return h === '#mapa' ? 'mapa' : h === '#diya' ? 'diya' : 'roli';
   }
   /* Switching is done in JS on click, so it also works where links to #anchors
      are blocked (embedded previews); the address bar is updated when allowed. */
@@ -860,8 +1386,6 @@
     ctx.textBaseline = 'alphabetic';
     font(ctx, 400, 17, true); ctx.fillStyle = MUTED; ctx.textAlign = 'left';
     ctx.fillText(t('footBased'), M, H - 56);
-    font(ctx, 700, 17); ctx.fillStyle = CRIMSON; ctx.textAlign = 'right';
-    ctx.fillText('ikigaitribe.com', W - M, H - 56);
     ctx.textAlign = 'left';
   }
   function newCanvas(W, H) {
@@ -932,7 +1456,10 @@
     font(mctx, 600, 22);
     var focusLines = state.focus.trim() ? wrap(mctx, state.focus.trim(), W - 2 * M - 2 * P).slice(0, 2) : [];
     var sumY = bottom + GAP, sumH = 76 + sum.h + 22;
-    var focY = sumY + sumH + GAP, focH = 62 + Math.max(1, focusLines.length) * 34 + 24;
+    font(mctx, 400, 18, true);
+    var qLines = wrap(mctx, t('focusQ'), W - 2 * M - 2 * P).slice(0, 2);
+    var QH = qLines.length * 26 + 8;
+    var focY = sumY + sumH + GAP, focH = 62 + QH + Math.max(1, focusLines.length) * 34 + 24;
     var H = focY + focH + 106;
 
     var c = newCanvas(W, H), ctx = c.getContext('2d');
@@ -1017,11 +1544,13 @@
     font(ctx, 700, 13); spacing(ctx, 1.2); ctx.fillStyle = INK;
     ctx.fillText(t('focusLabel').toUpperCase(), M + P, focY + 46);
     spacing(ctx, 0);
+    font(ctx, 400, 18, true); ctx.fillStyle = INK;
+    qLines.forEach(function (ln, k) { ctx.fillText(ln, M + P, focY + 78 + k * 26); });
     if (focusLines.length) {
       font(ctx, 600, 22); ctx.fillStyle = INK;
-      focusLines.forEach(function (ln, k) { ctx.fillText(ln, M + P, focY + 84 + k * 34); });
+      focusLines.forEach(function (ln, k) { ctx.fillText(ln, M + P, focY + 84 + QH + k * 34); });
     } else {
-      dotted(ctx, M + P, W - M - P, focY + 88);
+      dotted(ctx, M + P, W - M - P, focY + 88 + QH);
     }
 
     footer(ctx, W, H, M);
@@ -1031,11 +1560,11 @@
   function buildChartCanvas() {
     var ids = ratedRoles();
     var W = 1240, M = 84, ROW = 62, top = 262;
-    var H = top + ids.length * ROW + 140;
+    var H = top + ids.length * ROW + (state.baseline ? 170 : 140);
     var c = newCanvas(W, H), ctx = c.getContext('2d');
     header(ctx, W, M, t('titleChart'), t('pngScale'));
 
-    var labelW = 300, valW = 46;
+    var labelW = 300, valW = state.baseline ? 104 : 46;
     var x0 = M + labelW + 20, x1 = W - M - valW, unit = (x1 - x0) / 7;
     var plotBottom = top + ids.length * ROW;
 
@@ -1046,6 +1575,11 @@
     ctx.textBaseline = 'middle';
     ids.forEach(function (i, n) {
       var cy = top + n * ROW + ROW / 2, sc = state.roles[i].score, bh = 24;
+      var base = baseFor(roleName(i));
+      if (base && base.score) {
+        ctx.save(); ctx.strokeStyle = MUTED; ctx.lineWidth = 1.5; ctx.setLineDash([5, 4]);
+        ctx.strokeRect(x0, cy - 19, unit * base.score, 38); ctx.restore();
+      }
       font(ctx, 600, 20); ctx.fillStyle = INK; ctx.textAlign = 'right';
       ctx.fillText(fit(ctx, roleName(i), labelW), M + labelW, cy + 1);
       ctx.fillStyle = CRIMSON;
@@ -1058,6 +1592,11 @@
       ctx.closePath(); ctx.fill();
       font(ctx, 700, 21); ctx.fillStyle = INK; ctx.textAlign = 'left';
       ctx.fillText(String(sc), x1 + 16, cy + 1);
+      if (base && base.score) {
+        var d = sc - base.score;
+        font(ctx, 700, 16); ctx.fillStyle = d > 0 ? '#2E7D4F' : d < 0 ? CRIMSON : MUTED;
+        ctx.fillText(d > 0 ? '+' + d : d < 0 ? '−' + (-d) : '=', x1 + 16 + 30, cy + 1);
+      }
     });
     ctx.strokeStyle = INK; ctx.lineWidth = 2;
     ctx.beginPath(); ctx.moveTo(x0, top - 8); ctx.lineTo(x0, plotBottom); ctx.stroke();
@@ -1077,6 +1616,12 @@
     px += ctx.measureText(avg).width;
     font(ctx, 400, 19); ctx.fillStyle = MUTED;
     ctx.fillText('  ·  ' + t('rated') + ids.length, px, plotBottom + 84);
+    if (state.baseline) {
+      ctx.save(); ctx.strokeStyle = MUTED; ctx.lineWidth = 1.5; ctx.setLineDash([5, 4]);
+      ctx.strokeRect(M, plotBottom + 104, 30, 16); ctx.restore();
+      font(ctx, 400, 17); ctx.fillStyle = MUTED;
+      ctx.fillText(t('baseNote') + ' (' + (fmtDate(state.baseline.date) || '—') + ')', M + 42, plotBottom + 118);
+    }
     return c;
   }
 
@@ -1087,6 +1632,12 @@
     });
     var timeout = new Promise(function (res) { setTimeout(res, 1500); });
     return Promise.race([Promise.all(want).catch(function () {}), timeout]);
+  }
+  function downloadBlob(blob, filename) {
+    var url = URL.createObjectURL(blob), a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
   }
   function download(canvas, filename) {
     var go = function (url, revoke) {
